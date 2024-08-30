@@ -11,14 +11,9 @@ import { format } from 'date-fns'
 
 export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
 
-    console.log(invoiceInfo, 'invoiceInfo')
-
-
     const toWords = new ToWords();
 
-    // const unfilledArray = Array.from({ length: 18 - invoiceInfo.pricedproducts?.length }, (_, i) => i + 1);
-
-    const unfilledArray = Array.from({ length: 18 - invoiceInfo.pricedProducts?.length }, (_, i) => i + 1);
+    const unfilledArray = Array.from({ length: 17 - invoiceInfo.pricedProducts?.length }, (_, i) => i + 1);
 
     const componentRef = useRef<ReactInstance | null>(null);
 
@@ -134,21 +129,21 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                             <UnfilledProductTable />
 
                             <div className=" w-full flex border-black items-center text-center">
-                            <div className="border-r border-black w-10 ">&nbsp;</div>
-                            <div className="border-r border-black w-[322px] text-end px-1 italic">CGST %</div>
-                            <div className="border-r border-black w-20 ">&nbsp;</div>
-                            <div className="border-r border-black w-20 ">&nbsp;</div>
-                            <div className="border-r border-black w-20 ">&nbsp;</div>
-                            <div className=" w-20 ">{totalCgstAmt}</div>
-                        </div>
-                        <div className=" w-full flex border-black items-center text-center">
-                            <div className="border-r border-black w-10 ">&nbsp;</div>
-                            <div className="border-r border-black w-[322px] text-end px-1 italic">SGST %</div>
-                            <div className="border-r border-black w-20 ">&nbsp;</div>
-                            <div className="border-r border-black w-20 ">&nbsp;</div>
-                            <div className="border-r border-black w-20 ">&nbsp;</div>
-                            <div className=" w-20 ">{totalSgstAmt}</div>
-                        </div>
+                                <div className="border-r border-black w-10 ">&nbsp;</div>
+                                <div className="border-r border-black w-[322px] text-end px-1 italic">CGST %</div>
+                                <div className="border-r border-black w-20 ">&nbsp;</div>
+                                <div className="border-r border-black w-20 ">&nbsp;</div>
+                                <div className="border-r border-black w-20 ">&nbsp;</div>
+                                <div className=" w-20 ">{totalCgstAmt}</div>
+                            </div>
+                            <div className=" w-full flex border-black items-center text-center">
+                                <div className="border-r border-black w-10 ">&nbsp;</div>
+                                <div className="border-r border-black w-[322px] text-end px-1 italic">SGST %</div>
+                                <div className="border-r border-black w-20 ">&nbsp;</div>
+                                <div className="border-r border-black w-20 ">&nbsp;</div>
+                                <div className="border-r border-black w-20 ">&nbsp;</div>
+                                <div className=" w-20 ">{totalSgstAmt}</div>
+                            </div>
                             {/* <div className=" w-full flex border-black items-center text-center">
                                 <div className="border-r border-black w-10 ">&nbsp;</div>
                                 <div className="border-r border-black w-[322px] text-end px-1 italic">IGST %</div>
