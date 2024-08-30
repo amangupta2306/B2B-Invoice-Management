@@ -36,8 +36,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Invoice, Product } from "@prisma/client";
-import { CreateInvoice } from "@/action/invoice";
 
 const formSchemaInvoice = z.object({
   invoiceNo: z.string().min(1, "Invoice number is required."),
@@ -80,30 +78,26 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
   })
 
   const onSubmit = async (values: z.infer<typeof formSchemaInvoice>) => {
-    // let resetFlagInvoice = false
-    // if (hasEditingInvoice._id) {
-    //   resetFlagInvoice = await hasEditingInvoice(values);
-    // } else {
-    //   resetFlagInvoice = await handleCreateInvoice(values);
-    // }
-    // if (resetFlagInvoice) {
-    //   form.reset()
-    // }
     const res = await fetch("/api/invoice", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({values, productPrices})
+      body: JSON.stringify({ values, productPrices })
     })
+    form.reset()
   }
 
   const currCustomerId = form.watch("customerId")
   const selectProduct = form.watch("productDetails")
 
-  // useEffect(() => {
-  //   setProductPrices([selectProduct, ...productPrices])
-  // }, [selectProduct])
+  useEffect(() => {
+    const newSelecctedProducts = selectProduct.map((product: any) => {
+      const productInfo = productPrices.find((p) => p.id === product.value);
+      return productInfo ? { ...product, ...productInfo } : product;
+    })
+    setProductPrices(newSelecctedProducts)
+  }, [selectProduct])
 
   useEffect(() => {
     const totalTaxableValue = productPrices.reduce((acc, product) => acc + (product.taxableValue), 0);
@@ -139,7 +133,6 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
   };
 
   const currCustomer = customers.find((customer) => customer.id === currCustomerId)
-
 
   return (
     <Form {...form}>
@@ -244,21 +237,18 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
                       variant="outline"
                       role="combobox"
                       className={cn(
-                        "w-full justify-between",
+                        "w-full max-w-screen-2xl overflow-ellipsis overflow-clip justify-between",
                         !field.value && "text-muted-foreground"
                       )}
                     >
-                      {field.value
-                        ? customers.find(
-                          (customer) => customer.id === field.value
-                        )?.customerName
+                      {currCustomer ? (`${currCustomer?.customerName}`)
                         : "Select Customer"}
                       <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0">
-                  <Command>
+                  <Command className="max-w-screen-2xl">
                     <CommandInput placeholder="Search Customer..." />
                     <CommandList>
                       <ScrollArea className="h-[300px] w-full rounded-md border pr-3">
@@ -326,7 +316,7 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
                 <FormControl >
                   <MultipleSelector
                     {...field}
-                    onChange={(value) => setProductPrices(value)}
+                    // onChange={(value) => setProductPrices(value)}
                     defaultOptions={productsOpt || []}
                     commandProps={{
                       className: "border"
