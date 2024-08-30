@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  productName String @unique @db.String
+  hsnCode     Int    @db.Int
+  cgstRate    Float
+  sgstRate    Float
+
+  customPrice CustomPrice[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([hsnCode], name: "hsnCode_idx")
+}
+
+model CustomPrice {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  qty               Int   @db.Int
+  rate              Float
+  taxableValue      Float
+  cgstAmt           Float
+  sgstAmt           Float
+  productTotalValue Float
+
+  productId String  @db.ObjectId
+  product   Product @relation(fields: [productId], references: [id])
+
+  invoiceId String?  @db.ObjectId
+  Invoice   Invoice? @relation(fields: [invoiceId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([productId, qty], name: "unique_product_qty")
+  @@index([productId], name: "productId_idx")
+}
+
+model Customer {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  customerName String @db.String
+  address      String @db.String
+  gstIn        String @unique @db.String
+  state        String @db.String
+  stateCode    Int    @db.Int
+
+  invoice Invoice[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([stateCode], name: "stateCode_idx")
+}
+
+model Invoice {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  invoiceNo   String @unique
+  invoiceDate DateTime @default(now())
+  monthOf     String
+
+  totalTaxableValue Float
+  totalTaxGST       Float
+  totalInvoiceValue Float
+
+  customerId String   @db.ObjectId
+  customer   Customer @relation(fields: [customerId], references: [id])
+
+  pricedProducts CustomPrice[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([id, customerId], name: "unique_invoice_customer")
+  @@index([customerId], name: "customerId_idx")
+  @@index([invoiceDate], name: "invoiceDate_idx")
+}
