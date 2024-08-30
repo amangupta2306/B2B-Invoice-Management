@@ -1,5 +1,6 @@
-import { Customer } from "@/components/customer/customer-form";
+import { Customer } from "@/components/customer";
+import DemoPage from "@/components/customer/customer-table/demo";
 
 export default function CustomersPage() {
-  return <Customer />;
+  return <DemoPage />;
 }

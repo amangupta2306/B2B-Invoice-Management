@@ -1,5 +1,5 @@
+import DemoPage from "@/components/invoice/invoice-table/demo";
+
 export default function InvoicesPage() {
-    return (
-        <div>Invoices page</div>
-    )
+  return <DemoPage />;
 }

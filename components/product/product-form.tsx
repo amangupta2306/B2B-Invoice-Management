@@ -16,37 +16,33 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 
-const FormSchemaCustomer = z.object({
-  customerName: z.string().min(2, {
+const FormSchemaProduct = z.object({
+  productName: z.string().min(2, {
     message: "Customer name must be at least 2 characters.",
   }),
-  address: z.string().min(2, {
+  hsnCode: z.string().min(2, {
     message: "Address must be at least 2 characters.",
   }),
-  gstIn: z.string().min(2, {
+  cgstRate: z.string().min(2, {
     message: "GSTIN/UIN must be at least 2 characters.",
   }),
-  state: z.string().min(2, {
+  sgstRate: z.string().min(2, {
     message: "State must be at least 2 characters.",
-  }),
-  stateCode: z.string().min(1, {
-    message: "State code must be at least 2 characters.",
   }),
 });
 
-export function CustomerForm() {
-  const form = useForm<z.infer<typeof FormSchemaCustomer>>({
-    resolver: zodResolver(FormSchemaCustomer),
+export function ProductForm() {
+  const form = useForm<z.infer<typeof FormSchemaProduct>>({
+    resolver: zodResolver(FormSchemaProduct),
     defaultValues: {
-      customerName: "",
-      address: "",
-      gstIn: "",
-      state: "",
-      stateCode: "",
+      productName: "",
+      hsnCode: "",
+      cgstRate: "",
+      sgstRate: "",
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchemaCustomer>) {
+  function onSubmit(data: z.infer<typeof FormSchemaProduct>) {
     toast({
       title: "You submitted the following values:",
       description: (
@@ -62,12 +58,12 @@ export function CustomerForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
         <FormField
           control={form.control}
-          name="customerName"
+          name="productName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Customer Name</FormLabel>
+              <FormLabel>Product Name</FormLabel>
               <FormControl>
-                <Input placeholder="Customer Name" {...field} />
+                <Input placeholder="Product Name" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -75,12 +71,12 @@ export function CustomerForm() {
         />
         <FormField
           control={form.control}
-          name="address"
+          name="hsnCode"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Address</FormLabel>
+              <FormLabel>HSN Code</FormLabel>
               <FormControl>
-                <Input placeholder="Address" {...field} />
+                <Input placeholder="22011010" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -88,12 +84,12 @@ export function CustomerForm() {
         />
         <FormField
           control={form.control}
-          name="gstIn"
+          name="cgstRate"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>GSTIN/UIN</FormLabel>
+              <FormLabel>CGST Rate</FormLabel>
               <FormControl>
-                <Input placeholder="GSTIN/UIN" {...field} />
+                <Input placeholder="CGST Rate" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -101,31 +97,18 @@ export function CustomerForm() {
         />
         <FormField
           control={form.control}
-          name="state"
+          name="sgstRate"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>State</FormLabel>
+              <FormLabel>SGST Rate</FormLabel>
               <FormControl>
-                <Input placeholder="State" {...field} />
+                <Input placeholder="SGST Rate" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="stateCode"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>State Code</FormLabel>
-              <FormControl>
-                <Input placeholder="stateCode" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Create Customer</Button>
+        <Button type="submit">Create Product</Button>
       </form>
     </Form>
   );
