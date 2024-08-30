@@ -16,7 +16,9 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
 
     const toWords = new ToWords();
 
-    const unfilledArray = Array.from({ length: 18 - invoiceInfo.pricedproducts?.length }, (_, i) => i + 1);
+    // const unfilledArray = Array.from({ length: 18 - invoiceInfo.pricedproducts?.length }, (_, i) => i + 1);
+
+    const unfilledArray = Array.from({ length: 18 - invoiceInfo.pricedProducts?.length }, (_, i) => i + 1);
 
     const componentRef = useRef<ReactInstance | null>(null);
 
@@ -84,7 +86,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                                         </p>
                                     </span>
                                     <span className="border-b border-r border-black px-1 h-10">
-                                        <p>Month of</p>
+                                        <p>Month</p>
                                         <p className="font-bold">{invoiceInfo?.monthOf}</p>
                                     </span>
                                     <span className="border-b border-black px-1 h-10">
@@ -118,8 +120,8 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                                 {invoiceInfo?.pricedProducts?.map((item: any, i: number) => (
                                     <div key={item.id} className="flex w-full  text-center">
                                         <div className="border-r border-black w-10">{i + 1}</div>
-                                        <div className="border-r border-black w-[322px] text-start px-1">{item?.pricedProducts?.productName}</div>
-                                        <div className="border-r border-black w-20">{item?.pricedProducts?.hsnCode}</div>
+                                        <div className="border-r border-black w-[322px] text-start px-1">{item?.product?.productName}</div>
+                                        <div className="border-r border-black w-20">{item?.product?.hsnCode}</div>
                                         <div className="border-r border-black w-20">{item?.qty}</div>
                                         <div className="border-r border-black w-20">{item?.rate}</div>
                                         <div className='w-20'>{item?.taxableValue}</div>
@@ -131,7 +133,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                             <UnfilledProductTable />
                             <UnfilledProductTable />
 
-                            {/* <div className=" w-full flex border-black items-center text-center">
+                            <div className=" w-full flex border-black items-center text-center">
                             <div className="border-r border-black w-10 ">&nbsp;</div>
                             <div className="border-r border-black w-[322px] text-end px-1 italic">CGST %</div>
                             <div className="border-r border-black w-20 ">&nbsp;</div>
@@ -146,15 +148,15 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                             <div className="border-r border-black w-20 ">&nbsp;</div>
                             <div className="border-r border-black w-20 ">&nbsp;</div>
                             <div className=" w-20 ">{totalSgstAmt}</div>
-                        </div> */}
-                            <div className=" w-full flex border-black items-center text-center">
+                        </div>
+                            {/* <div className=" w-full flex border-black items-center text-center">
                                 <div className="border-r border-black w-10 ">&nbsp;</div>
                                 <div className="border-r border-black w-[322px] text-end px-1 italic">IGST %</div>
                                 <div className="border-r border-black w-20 ">&nbsp;</div>
                                 <div className="border-r border-black w-20 ">&nbsp;</div>
                                 <div className="border-r border-black w-20 ">&nbsp;</div>
                                 <div className=" w-20 ">{totalSgstAmt}</div>
-                            </div>
+                            </div> */}
 
                             <div className=" absolute bottom-0 w-full flex border-t border-black items-center text-center">
                                 <div className="border-r border-black w-10 ">&nbsp;</div>
