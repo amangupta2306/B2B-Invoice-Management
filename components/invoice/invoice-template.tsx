@@ -11,17 +11,18 @@ import { format } from 'date-fns'
 
 export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
 
+    console.log(invoiceInfo, 'invoiceInfo')
+
 
     const toWords = new ToWords();
 
-    const unfilledArray = Array.from({ length: 18 - invoiceInfo.pricedProductIds?.length }, (_, i) => i + 1);
+    const unfilledArray = Array.from({ length: 18 - invoiceInfo.pricedproducts?.length }, (_, i) => i + 1);
 
     const componentRef = useRef<ReactInstance | null>(null);
 
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
     });
-
 
     const printDocument = () => {
         const input = document.getElementById("divToPrint");
@@ -34,15 +35,15 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
         });
     };
 
-    const totalCgstAmt = invoiceInfo?.pricedProductIds?.reduce((sum: number, product: any) => sum + product.cgstAmt, 0)
-    const totalSgstAmt = invoiceInfo?.pricedProductIds?.reduce((sum: number, product: any) => sum + product.sgstAmt, 0)
+    const totalCgstAmt = invoiceInfo?.pricedProducts?.reduce((sum: number, product: any) => sum + product.cgstAmt, 0)
+    const totalSgstAmt = invoiceInfo?.pricedProducts?.reduce((sum: number, product: any) => sum + product.sgstAmt, 0)
     return (
         <div className='max-w-screen-md container mx-auto'>
             <div className="flex justify-center mb-2">
                 <button onClick={handlePrint} className="bg-customColor-100 text-customColor-50 rounded-md p-2">Print Invoice</button>
                 <button onClick={printDocument} className="bg-customColor-100 text-customColor-50 rounded-md p-2 ml-2">Download PDF</button>
             </div>
-            <div ref={componentRef} id="divToPrint" className='text-sm '>
+            <div ref={componentRef} id="divToPrint" className='text-sm text-black'>
                 <header className='pt-5'>
                     <div className=" flex justify-between mb-1">
                         <div></div>
@@ -64,10 +65,10 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                                 </div>
                                 <div className="border-t border-r border-black px-1">
                                     <p>Buyer (Bill to)</p>
-                                    <p className="font-bold">{invoiceInfo?.customerId?.customerName}</p>
-                                    <p>{invoiceInfo?.customerId?.address}</p>
-                                    <p>GSTIN/UIN : {invoiceInfo?.customerId?.gstin}</p>
-                                    <p>State Name : {invoiceInfo?.customerId?.state}, Code : {invoiceInfo?.customerId?.stateCode}</p>
+                                    <p className="font-bold">{invoiceInfo?.customer?.customerName}</p>
+                                    <p>{invoiceInfo?.customer?.address}</p>
+                                    <p>GSTIN/UIN : {invoiceInfo?.customer?.gstIn}</p>
+                                    <p>State Name : {invoiceInfo?.customer?.state}, Code : {invoiceInfo?.customer?.stateCode}</p>
                                 </div>
                             </div>
                             <div className="w-[48%]">
@@ -83,7 +84,8 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                                         </p>
                                     </span>
                                     <span className="border-b border-r border-black px-1 h-10">
-                                        <p>Delivery Note</p>
+                                        <p>Month of</p>
+                                        <p className="font-bold">{invoiceInfo?.monthOf}</p>
                                     </span>
                                     <span className="border-b border-black px-1 h-10">
                                         <p>Mode/Terms of Payment</p>
@@ -222,7 +224,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                                 <div key={item.id} className='flex'>
 
                                     <div className="w-80">
-                                        <div className="border-b border-r border-black text-start px-1">{item?.productId?.hsnCode}</div>
+                                        <div className="border-b border-r border-black text-start px-1">{item?.product?.hsnCode}</div>
                                     </div>
 
                                     <div className="flex text-center">
@@ -230,12 +232,12 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                                         <div className="w-20 border-b border-r border-black">{item?.taxableValue}</div>
 
                                         <div className="flex">
-                                            <div className="w-10 border-b border-r border-black">{item?.productId?.cgstRate}%</div>
+                                            <div className="w-10 border-b border-r border-black">{item?.product?.cgstRate}%</div>
                                             <div className="w-16 border-b border-r border-black">{item?.cgstAmt}</div>
                                         </div>
 
                                         <div className="flex">
-                                            <div className="w-10 border-b border-r border-black">{item?.productId?.sgstRate}%</div>
+                                            <div className="w-10 border-b border-r border-black">{item?.product?.sgstRate}%</div>
                                             <div className="w-16 border-b border-r border-black">{item?.sgstAmt}</div>
                                         </div>
 
