@@ -44,18 +44,21 @@ export const LINKS = [
     {
         title: "Invoices",
         label: "500+",
+        href: '/invoices',
         icon: ReceiptTextIcon,
         variant: "default" as const,
     },
     {
         title: "Customers",
         label: "100+",
+        href: '/customers',
         icon: UsersRoundIcon,
         variant: "default" as const,
     },
     {
         title: "Products",
         label: "50+",
+        href: '/products',
         icon: BoxIcon,
         variant: "default" as const,
     },

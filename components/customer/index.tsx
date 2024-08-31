@@ -1,30 +1,38 @@
+import { CustomerForm } from "./customer-form"
 import {
     Card,
     CardContent,
     CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { CustomerForm } from "./customer-form"
+import { CustomerTable } from "./customer-table"
+import prisma from "@/lib/db";
 
-export const Customer = ()=>{
-    return(
-        <div className="p-4">
-            <Card>
+export const Customer = async () => {
+    const dbCustomers = await prisma.customer.findMany();
+    return (
+        <div className="flex gap-3">
+            <Card className="flex-1">
                 <CardHeader>
-                    <CardTitle>Create Customer</CardTitle>
-                    <CardDescription>Customer</CardDescription>
+                    <CardTitle>Card Title</CardTitle>
+                    <CardDescription>Card Description</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <CustomerForm
-                    //  customers={customers || []} products={products || []} lastInvoiceNo={invoices?.invoiceNo || null}
-                    />
+                    <CustomerForm />
+
                 </CardContent>
-                {/* <CardFooter>
-                    <p>Card Footer</p>
-                </CardFooter> */}
+            </Card>
+            <Card className="flex-1">
+                <CardHeader>
+                    <CardTitle>Card Title</CardTitle>
+                    <CardDescription>Card Description</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <CustomerTable customers={dbCustomers}  />
+                </CardContent>
             </Card>
         </div>
+
     )
 }

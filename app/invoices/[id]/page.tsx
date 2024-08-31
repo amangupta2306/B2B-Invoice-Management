@@ -17,8 +17,6 @@ export default async function InvoicesPage({ params }: { params: { id: string } 
         }
     })
 
-    console.log(invoiceInfo)
-
     return (
         <div>Invoices page id: {params.id}
             <InvoiceTemplate invoiceInfo={invoiceInfo} />

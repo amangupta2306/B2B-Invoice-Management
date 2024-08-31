@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
+import { CreateCustomer } from "@/action/customer";
 
 const FormSchemaCustomer = z.object({
   customerName: z.string().min(2, {
@@ -46,15 +47,9 @@ export function CustomerForm() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchemaCustomer>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+  async function onSubmit(data: z.infer<typeof FormSchemaCustomer>) {
+    console.log(data);
+    await CreateCustomer({ values: data });
   }
 
   return (

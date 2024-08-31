@@ -80,7 +80,7 @@ export function DataTable({
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
-  const [filteringInvoice, setFilteringInvoice] = React.useState({});
+  const [filteringInvoice, setFilteringInvoice] = React.useState("");
 
   const table = useReactTable({
     data,

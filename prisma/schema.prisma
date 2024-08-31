@@ -19,7 +19,6 @@ model Product {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([hsnCode], name: "hsnCode_idx")
 }
 
 model CustomPrice {
@@ -41,8 +40,7 @@ model CustomPrice {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([productId, qty], name: "unique_product_qty")
-  @@index([productId], name: "productId_idx")
+  @@unique([productId, invoiceId], name: "unique_product_invoice")
 }
 
 model Customer {
@@ -57,8 +55,6 @@ model Customer {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@index([stateCode], name: "stateCode_idx")
 }
 
 model Invoice {
@@ -81,6 +77,4 @@ model Invoice {
   updatedAt DateTime @updatedAt
 
   @@unique([id, customerId], name: "unique_invoice_customer")
-  @@index([customerId], name: "customerId_idx")
-  @@index([invoiceDate], name: "invoiceDate_idx")
 }

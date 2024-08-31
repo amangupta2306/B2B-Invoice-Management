@@ -8,18 +8,22 @@ import { LINKS } from "@/lib/data-helper"
 
 import { buttonVariants } from "@/components/ui/button"
 import ActionTooltip from "@/components/action-tooltip"
+import { usePathname } from "next/navigation"
 
 interface NavProps {
     isCollapsed?: boolean
     links?: {
         title: string
         label?: string
+        href: string
         icon: LucideIcon
         variant: "default" | "ghost"
     }[]
 }
 
 export function NavbarItems({ links = LINKS, isCollapsed = false }: NavProps) {
+    const pathname = usePathname()
+    console.log(pathname)
     return (
         <div
             data-collapsed={isCollapsed}
@@ -33,12 +37,13 @@ export function NavbarItems({ links = LINKS, isCollapsed = false }: NavProps) {
                             side="right"
                         >
                             <Link
-                                href="#"
+                                href={link.href || ""}
                                 className={cn(
                                     buttonVariants({ variant: link.variant, size: "icon" }),
                                     "h-9 w-9",
                                     link.variant === "default" &&
-                                    "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
+                                    "dark:bg-muted dark:text-muted-foreground dark:hover:bg-primary dark:hover:text-white",
+                                    pathname === link.href ? "bg-primary text-white" : ""
                                 )}
                             >
                                 <link.icon className="h-4 w-4" />
@@ -48,12 +53,13 @@ export function NavbarItems({ links = LINKS, isCollapsed = false }: NavProps) {
                     ) : (
                         <Link
                             key={index}
-                            href="#"
+                            href={link.href || ""}
                             className={cn(
                                 buttonVariants({ variant: link.variant, size: "sm" }),
                                 link.variant === "default" &&
-                                "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white",
-                                "justify-start"
+                                "dark:bg-muted dark:text-white dark:hover:bg-primary dark:hover:text-white",
+                                "justify-start",
+                                pathname === link.href ? "dark:bg-primary text-white" : ""
                             )}
                         >
                             <link.icon className="mr-2 h-4 w-4" />

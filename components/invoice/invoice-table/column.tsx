@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
@@ -12,6 +14,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { format } from "date-fns";
+import HoverCardToolTip from "@/components/hover-card-tooltip";
 
 export type Payment = {
   id: string;
@@ -74,21 +78,30 @@ export const columns: ColumnDef<Payment>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("invoiceDate")}</div>
+      <div className="lowercase">{format(row.getValue("invoiceDate"), 'dd-MM-yyyy')}</div>
     ),
   },
   {
-    accessorKey: "customerName",
     header: "Customer Name",
+    accessorKey: "customerName",
     cell: ({ row }) => (
       <div className="capitalize">{row.getValue("customerName")}</div>
     ),
   },
   {
-    accessorKey: "address",
     header: "Address",
+    accessorKey: "address",
     cell: ({ row }) => (
       <div className="capitalize">{row.getValue("address")}</div>
+    ),
+  },
+  {
+    header: "Product",
+    accessorKey: "product",
+    cell: ({ row }) => (
+      <HoverCardToolTip side="top" label="Product" align="center" className="min-w-max">
+        <div className="capitalize">{row.getValue("product")}</div>
+      </HoverCardToolTip>
     ),
   },
   {

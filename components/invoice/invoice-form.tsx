@@ -66,7 +66,7 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
   const form = useForm({
     resolver: zodResolver(formSchemaInvoice),
     defaultValues: {
-      invoiceNo: (((Number(lastInvoiceNo) ?? 0) + 1) || 0).toString(),
+      invoiceNo: (((lastInvoiceNo ? Number(lastInvoiceNo) : 1001) + 1) || 0).toString(),
       invoiceDate: new Date(),
       monthOf: new Date().toLocaleString("en-US", { month: 'long' }),
       customerId: "",
