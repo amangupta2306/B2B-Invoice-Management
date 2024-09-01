@@ -12,7 +12,7 @@ import prisma from "@/lib/db";
 export const Customer = async () => {
     const dbCustomers = await prisma.customer.findMany();
     return (
-        <div className="flex gap-3 p-3">
+        <div className="flex gap-3 p-3"> 
             <Card className="w-1/3">
                 <CardHeader>
                     <CardTitle>Create Customer</CardTitle>

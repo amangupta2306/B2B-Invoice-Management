@@ -1,4 +1,3 @@
-// @ts-nocheck
 "use client"
 
 import { ReactInstance, useRef } from 'react';
@@ -15,7 +14,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
 
     const unfilledArray = Array.from({ length: 17 - invoiceInfo.pricedProducts?.length }, (_, i) => i + 1);
 
-    const componentRef = useRef<ReactInstance | null>(null);
+    const componentRef = useRef<HTMLDivElement | null>(null);
 
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
@@ -23,6 +22,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
 
     const printDocument = () => {
         const input = document.getElementById("divToPrint");
+        if (!input) return;
         html2canvas(input)?.then((canvas) => {
             const imgData = canvas.toDataURL("image/png");
             const pdf = new jsPDF();
