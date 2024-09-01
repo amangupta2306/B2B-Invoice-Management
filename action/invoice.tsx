@@ -1,7 +1,7 @@
-"use server"
+"use server";
 
-import prisma from "@/lib/db"
-import { revalidatePath } from "next/cache"
+import prisma from "@/lib/db";
+import { revalidatePath } from "next/cache";
 
 export const CreateInvoice = async (values: any): Promise<boolean> => {
   try {
@@ -12,6 +12,9 @@ export const CreateInvoice = async (values: any): Promise<boolean> => {
         monthOf: values.values.monthOf,
         yearOf: values.values.yearOf,
         customerId: values.values.customerId,
+        totalInvoiceValue: values.values.totalInvoiceValue.toFixed(2),
+        totalTaxGST: values.values.totalTaxGST.toFixed(2),
+        totalTaxableValue: values.values.totalTaxableValue.toFixed(2),
         totalInvoiceValue: values.values.totalInvoiceValue.toFixed(2),
         totalTaxGST: values.values.totalTaxGST.toFixed(2),
         totalTaxableValue: values.values.totalTaxableValue.toFixed(2),
@@ -34,7 +37,7 @@ export const CreateInvoice = async (values: any): Promise<boolean> => {
     revalidatePath("/")
     return true
   } catch (error) {
-    console.log(error)
-    return false
+    console.log(error);
+    return false;
   }
-}   
+};
