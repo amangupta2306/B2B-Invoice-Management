@@ -2,7 +2,7 @@
 
 import { ReactInstance, useEffect, useRef } from 'react';
 import { ToWords } from 'to-words';
-import { formatCurrencyForIndia } from "@/lib/utils";
+import { cn, formatCurrencyForIndia } from "@/lib/utils";
 import { useReactToPrint } from 'react-to-print';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -137,30 +137,33 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                             <UnfilledProductTable />
                             <UnfilledProductTable />
 
-                            <div className=" w-full flex border-black items-center text-center">
-                                <div className="border-r border-black w-10 ">&nbsp;</div>
-                                <div className="border-r border-black w-[322px] text-end px-1 italic">CGST %</div>
-                                <div className="border-r border-black w-20 ">&nbsp;</div>
-                                <div className="border-r border-black w-20 ">&nbsp;</div>
-                                <div className="border-r border-black w-20 ">&nbsp;</div>
-                                <div className=" w-20 ">{totalCgstAmt}</div>
-                            </div>
-                            <div className=" w-full flex border-black items-center text-center">
-                                <div className="border-r border-black w-10 ">&nbsp;</div>
-                                <div className="border-r border-black w-[322px] text-end px-1 italic">SGST %</div>
-                                <div className="border-r border-black w-20 ">&nbsp;</div>
-                                <div className="border-r border-black w-20 ">&nbsp;</div>
-                                <div className="border-r border-black w-20 ">&nbsp;</div>
-                                <div className=" w-20 ">{totalSgstAmt}</div>
-                            </div>
-                            {/* <div className=" w-full flex border-black items-center text-center">
+                            {!invoiceInfo.isOutsideDelhiInvoice ? (
+                                <>
+                                    <div className=" w-full flex border-black items-center text-center">
+                                        <div className="border-r border-black w-10 ">&nbsp;</div>
+                                        <div className="border-r border-black w-[322px] text-end px-1 italic">CGST %</div>
+                                        <div className="border-r border-black w-20 ">&nbsp;</div>
+                                        <div className="border-r border-black w-20 ">&nbsp;</div>
+                                        <div className="border-r border-black w-20 ">&nbsp;</div>
+                                        <div className=" w-20 ">{totalCgstAmt}</div>
+                                    </div>
+                                    <div className=" w-full flex border-black items-center text-center">
+                                        <div className="border-r border-black w-10 ">&nbsp;</div>
+                                        <div className="border-r border-black w-[322px] text-end px-1 italic">SGST %</div>
+                                        <div className="border-r border-black w-20 ">&nbsp;</div>
+                                        <div className="border-r border-black w-20 ">&nbsp;</div>
+                                        <div className="border-r border-black w-20 ">&nbsp;</div>
+                                        <div className=" w-20 ">{totalSgstAmt}</div>
+                                    </div>
+                                </>) : <div className=" w-full flex border-black items-center text-center">
                                 <div className="border-r border-black w-10 ">&nbsp;</div>
                                 <div className="border-r border-black w-[322px] text-end px-1 italic">IGST %</div>
                                 <div className="border-r border-black w-20 ">&nbsp;</div>
                                 <div className="border-r border-black w-20 ">&nbsp;</div>
                                 <div className="border-r border-black w-20 ">&nbsp;</div>
-                                <div className=" w-20 ">{totalSgstAmt}</div>
-                            </div> */}
+                                <div className=" w-20 ">{totalSgstAmt + totalCgstAmt}</div>
+                            </div>
+                            }
 
                             <div className=" absolute bottom-0 w-full flex border-t border-black items-center text-center">
                                 <div className="border-r border-black w-10 ">&nbsp;</div>
@@ -188,7 +191,8 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                         <div className="flex text-center">
 
                             {/* Header 1 */}
-                            <div className="border-b w-80 border-r border-black ">
+
+                            <div className={cn("border-b border-r border-black", invoiceInfo.isOutsideDelhiInvoice ? "w-[26.2rem]" : "w-80")}>
                                 <div>HSN/SAC</div>
                             </div>
 
@@ -199,26 +203,40 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                                     <div>Taxable Value</div>
                                 </div>
 
-                                <div>
-                                    <div className="border-b border-r border-black">
-                                        Central Tax
-                                    </div>
-                                    <div className="flex">
-                                        <div className="w-10 border-r border-black">Rate</div>
-                                        <div className="w-16 border-r border-black">Amount</div>
-                                    </div>
-
-                                </div>
-                                <div className="">
-                                    <div className="border-b border-r border-black">
-                                        State Tax
-                                    </div>
-                                    <div className="flex">
-                                        <div className="w-10 border-r border-black">Rate</div>
-                                        <div className="w-16 border-r border-black">Amount</div>
-                                    </div>
-
-                                </div>
+                                {
+                                    !invoiceInfo.isOutsideDelhiInvoice ? (
+                                        <>
+                                            <div>
+                                                <div className="border-b border-r border-black">
+                                                    Central Tax
+                                                </div>
+                                                <div className="flex">
+                                                    <div className="w-10 border-r border-black">Rate</div>
+                                                    <div className="w-16 border-r border-black">Amount</div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div className="border-b border-r border-black">
+                                                    State Tax
+                                                </div>
+                                                <div className="flex">
+                                                    <div className="w-10 border-r border-black">Rate</div>
+                                                    <div className="w-16 border-r border-black">Amount</div>
+                                                </div>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <div>
+                                            <div className="border-b border-r border-black">
+                                                IGST
+                                            </div>
+                                            <div className="flex">
+                                                <div className="w-10 border-r border-black">Rate</div>
+                                                <div className="w-16 border-r border-black">Amount</div>
+                                            </div>
+                                        </div>
+                                    )
+                                }
                                 <div className="w-[93px] border-black">
                                     Total Tax Amount
                                 </div>
@@ -229,23 +247,33 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                             {invoiceInfo?.pricedProducts?.map((item: any) => (
                                 <div key={item.id} className='flex'>
 
-                                    <div className="w-80">
+                                    <div className={cn(invoiceInfo.isOutsideDelhiInvoice ? "w-[26.2rem]" : "w-80")}>
                                         <div className="border-b border-r border-black text-start px-1">{item?.product?.hsnCode}</div>
                                     </div>
 
                                     <div className="flex text-center">
-
                                         <div className="w-20 border-b border-r border-black">{item?.taxableValue}</div>
 
-                                        <div className="flex">
-                                            <div className="w-10 border-b border-r border-black">{item?.product?.cgstRate}%</div>
-                                            <div className="w-16 border-b border-r border-black">{item?.cgstAmt}</div>
-                                        </div>
+                                        {
+                                            invoiceInfo.isOutsideDelhiInvoice ? (
+                                                <div className="flex">
+                                                    <div className="w-10 border-b border-r border-black">{item?.product?.cgstRate + item?.product?.sgstRate}%</div>
+                                                    <div className="w-16 border-b border-r border-black">{item?.cgstAmt + item?.sgstAmt}</div>
+                                                </div>
+                                            ) : (
+                                                <>
+                                                    <div className="flex">
+                                                        <div className="w-10 border-b border-r border-black">{item?.product?.cgstRate}%</div>
+                                                        <div className="w-16 border-b border-r border-black">{item?.cgstAmt}</div>
+                                                    </div>
 
-                                        <div className="flex">
-                                            <div className="w-10 border-b border-r border-black">{item?.product?.sgstRate}%</div>
-                                            <div className="w-16 border-b border-r border-black">{item?.sgstAmt}</div>
-                                        </div>
+                                                    <div className="flex">
+                                                        <div className="w-10 border-b border-r border-black">{item?.product?.sgstRate}%</div>
+                                                        <div className="w-16 border-b border-r border-black">{item?.sgstAmt}</div>
+                                                    </div>
+                                                </>
+                                            )
+                                        }
 
                                         <div className="w-[93px] border-b border-black">{item?.sgstAmt + item?.cgstAmt}</div>
 
@@ -255,24 +283,41 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                             ))}
 
                             <div className='flex'>
-                                <div className="w-80">
+                                <div className={cn(invoiceInfo.isOutsideDelhiInvoice ? "w-[26.2rem]" : "w-80")}>
                                     <div className="border-b border-r border-black text-right px-1">Total</div>
                                 </div>
 
                                 <div className="flex text-center">
                                     <div className="w-20 border-b border-r border-black">{invoiceInfo?.totalTaxableValue}</div>
+                                    {
+                                        invoiceInfo.isOutsideDelhiInvoice ? (
+                                            <div className="flex">
+                                                <div className="w-10 border-b border-r border-black">&nbsp;</div>
+                                                <div className="w-16 border-b border-r border-black">{totalCgstAmt + totalSgstAmt}</div>
+                                            </div>
+                                        ) : (
+                                            <>
+                                                <div className="flex">
+                                                    <div className="w-10 border-b border-r border-black">{totalCgstAmt}%</div>
+                                                    <div className="w-16 border-b border-r border-black">{totalCgstAmt}</div>
+                                                </div>
 
-                                    <div className="flex">
-                                        <div className="w-10 border-b border-r border-black"></div>
-                                        <div className="w-16 border-b border-r border-black">{totalCgstAmt}</div>
-                                    </div>
+                                                <div className="flex">
+                                                    <div className="w-10 border-b border-r border-black">{totalSgstAmt}%</div>
+                                                    <div className="w-16 border-b border-r border-black">{totalSgstAmt}</div>
+                                                </div>
+                                            </>
+                                        )
+                                    }
 
-                                    <div className="flex">
-                                        <div className="w-10 border-b border-r border-black"></div>
-                                        <div className="w-16 border-b border-r border-black">{totalSgstAmt}</div>
-                                    </div>
+                                    {
+                                        invoiceInfo.isOutsideDelhiInvoice ? (
+                                            <div className="w-[93px] border-b border-black">{totalCgstAmt + totalSgstAmt}</div>
+                                        ) : (
+                                            <div className="w-[93px] border-b border-black">{totalCgstAmt + totalSgstAmt}</div>
+                                        )
+                                    }
 
-                                    <div className="w-[93px] border-b border-black">{invoiceInfo?.totalTaxGST}</div>
                                 </div>
                             </div>
 
