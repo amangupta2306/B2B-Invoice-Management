@@ -88,7 +88,7 @@ export function CustomerForm() {
             <FormItem>
               <FormLabel>GSTIN/UIN</FormLabel>
               <FormControl>
-                <Input placeholder="GSTIN/UIN" {...field} />
+                <Input className="uppercase" placeholder="GSTIN/UIN" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
