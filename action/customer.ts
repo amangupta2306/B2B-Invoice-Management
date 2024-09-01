@@ -7,10 +7,10 @@ export const CreateCustomer = async (values: any) => {
     try {
         const newCustomer = await prisma.customer.create({
             data: {
-                customerName: values.values.customerName,
-                address: values.values.address,
-                state: values.values.state,
-                gstIn: values.values.gstIn,
+                customerName: values.values.customerName.toUpperCase(),
+                address: values.values.address.toUpperCase(),
+                state: values.values.state.toUpperCase(),
+                gstIn: values.values.gstIn.toUpperCase(),
                 stateCode: Number(values.values.stateCode)
             }
         })

@@ -26,10 +26,10 @@ model CustomPrice {
 
   qty               Int   @db.Int
   rate              Float
-  taxableValue      Float
-  cgstAmt           Float
-  sgstAmt           Float
-  productTotalValue Float
+  taxableValue      String
+  cgstAmt           String
+  sgstAmt           String
+  productTotalValue String
 
   productId String  @db.ObjectId
   product   Product @relation(fields: [productId], references: [id])
@@ -65,9 +65,9 @@ model Invoice {
   monthOf     String
   yearOf      String
 
-  totalTaxableValue Float
-  totalTaxGST       Float
-  totalInvoiceValue Float
+  totalTaxableValue String
+  totalTaxGST       String
+  totalInvoiceValue String
   isOutsideDelhiInvoice Boolean
 
   customerId String   @db.ObjectId

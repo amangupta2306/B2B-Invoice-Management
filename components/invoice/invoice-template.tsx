@@ -20,9 +20,9 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
 
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
-        onAfterPrint: () => {
-            router.back();
-        },
+        // onAfterPrint: () => {
+        //     router.back();
+        // },
     });
 
     useEffect(() => {
@@ -41,8 +41,8 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
         });
     };5
 
-    const totalCgstAmt = invoiceInfo?.pricedProducts?.reduce((sum: number, product: any) => sum + product.cgstAmt, 0)
-    const totalSgstAmt = invoiceInfo?.pricedProducts?.reduce((sum: number, product: any) => sum + product.sgstAmt, 0)
+    const totalCgstAmt = Number(invoiceInfo?.pricedProducts?.reduce((sum: number, product: any) => sum + product.cgstAmt, 0)).toFixed(2)
+    const totalSgstAmt = Number(invoiceInfo?.pricedProducts?.reduce((sum: number, product: any) => sum + product.sgstAmt, 0)).toFixed(2)
     return (
         <div className='max-w-screen-md container mx-auto'>
             <div className="flex justify-center mb-2">
@@ -145,7 +145,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                                         <div className="border-r border-black w-20 ">&nbsp;</div>
                                         <div className="border-r border-black w-20 ">&nbsp;</div>
                                         <div className="border-r border-black w-20 ">&nbsp;</div>
-                                        <div className=" w-20 ">{totalCgstAmt}</div>
+                                        <div className=" w-20 ">{(totalCgstAmt)}</div>
                                     </div>
                                     <div className=" w-full flex border-black items-center text-center">
                                         <div className="border-r border-black w-10 ">&nbsp;</div>
@@ -161,7 +161,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                                 <div className="border-r border-black w-20 ">&nbsp;</div>
                                 <div className="border-r border-black w-20 ">&nbsp;</div>
                                 <div className="border-r border-black w-20 ">&nbsp;</div>
-                                <div className=" w-20 ">{totalSgstAmt + totalCgstAmt}</div>
+                                <div className=" w-20 ">{totalSgstAmt + (totalCgstAmt)}</div>
                             </div>
                             }
 
@@ -211,7 +211,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                                                     Central Tax
                                                 </div>
                                                 <div className="flex">
-                                                    <div className="w-10 border-r border-black">Rate</div>
+                                                    <div className="w-12 border-r border-black">Rate</div>
                                                     <div className="w-16 border-r border-black">Amount</div>
                                                 </div>
                                             </div>
@@ -220,7 +220,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                                                     State Tax
                                                 </div>
                                                 <div className="flex">
-                                                    <div className="w-10 border-r border-black">Rate</div>
+                                                    <div className="w-12 border-r border-black">Rate</div>
                                                     <div className="w-16 border-r border-black">Amount</div>
                                                 </div>
                                             </div>
@@ -231,7 +231,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                                                 IGST
                                             </div>
                                             <div className="flex">
-                                                <div className="w-10 border-r border-black">Rate</div>
+                                                <div className="w-12 border-r border-black">Rate</div>
                                                 <div className="w-16 border-r border-black">Amount</div>
                                             </div>
                                         </div>
@@ -257,18 +257,18 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                                         {
                                             invoiceInfo.isOutsideDelhiInvoice ? (
                                                 <div className="flex">
-                                                    <div className="w-10 border-b border-r border-black">{item?.product?.cgstRate + item?.product?.sgstRate}%</div>
+                                                    <div className="w-12 border-b border-r border-black">{item?.product?.cgstRate + item?.product?.sgstRate}%</div>
                                                     <div className="w-16 border-b border-r border-black">{item?.cgstAmt + item?.sgstAmt}</div>
                                                 </div>
                                             ) : (
                                                 <>
                                                     <div className="flex">
-                                                        <div className="w-10 border-b border-r border-black">{item?.product?.cgstRate}%</div>
+                                                        <div className="w-12 border-b border-r border-black">{item?.product?.cgstRate}%</div>
                                                         <div className="w-16 border-b border-r border-black">{item?.cgstAmt}</div>
                                                     </div>
 
                                                     <div className="flex">
-                                                        <div className="w-10 border-b border-r border-black">{item?.product?.sgstRate}%</div>
+                                                        <div className="w-12 border-b border-r border-black">{item?.product?.sgstRate}%</div>
                                                         <div className="w-16 border-b border-r border-black">{item?.sgstAmt}</div>
                                                     </div>
                                                 </>
@@ -292,18 +292,18 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                                     {
                                         invoiceInfo.isOutsideDelhiInvoice ? (
                                             <div className="flex">
-                                                <div className="w-10 border-b border-r border-black">&nbsp;</div>
+                                                <div className="w-12 border-b border-r border-black">&nbsp;</div>
                                                 <div className="w-16 border-b border-r border-black">{totalCgstAmt + totalSgstAmt}</div>
                                             </div>
                                         ) : (
                                             <>
                                                 <div className="flex">
-                                                    <div className="w-10 border-b border-r border-black">{totalCgstAmt}%</div>
+                                                    <div className="w-12 border-b border-r border-black">{totalCgstAmt}%</div>
                                                     <div className="w-16 border-b border-r border-black">{totalCgstAmt}</div>
                                                 </div>
 
                                                 <div className="flex">
-                                                    <div className="w-10 border-b border-r border-black">{totalSgstAmt}%</div>
+                                                    <div className="w-12 border-b border-r border-black">{totalSgstAmt}%</div>
                                                     <div className="w-16 border-b border-r border-black">{totalSgstAmt}</div>
                                                 </div>
                                             </>
