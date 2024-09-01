@@ -13,7 +13,7 @@ export const CreateProduct = async (values: any) => {
                 sgstRate: Number(values.values.sgstRate),
             }
         })
-        revalidatePath("/products")
+        revalidatePath("/")
         return newProduct
     } catch (error) {
         console.log(error)

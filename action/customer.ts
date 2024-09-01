@@ -14,27 +14,9 @@ export const CreateCustomer = async (values: any) => {
                 stateCode: Number(values.values.stateCode)
             }
         })
-        revalidatePath("/customers")
+        revalidatePath("/")
         return newCustomer
     } catch (error) {
         console.log(error)
     }
-}   
-
-// export const UpdateCustomer = async ()=>{
-//     try {
-//         const updateCustomer = await prisma.customer.updateMany({
-//             data: {
-//                 customerName: values.values.customerName,
-//                 address: values.values.address,
-//                 state: values.values.state,
-//                 gstIn: values.values.gstIn,
-//                 stateCode: Number(values.values.stateCode)
-//             }
-//         })
-//         return updateCustomer
-        
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
+}
