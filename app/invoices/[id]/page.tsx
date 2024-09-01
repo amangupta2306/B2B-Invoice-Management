@@ -7,20 +7,18 @@ export default async function InvoicesPage({ params }: { params: { id: string } 
         where: {
             id: params.id
         },
-        include: { 
+        include: {
             customer: true,
             pricedProducts: {
                 include: {
                     product: true
-                }   
+                }
             }
         }
     })
 
     return (
-        <div>Invoices page id: {params.id}
-            <InvoiceTemplate invoiceInfo={invoiceInfo} />
-        </div>
+        <InvoiceTemplate invoiceInfo={invoiceInfo} />
     )
 }
 

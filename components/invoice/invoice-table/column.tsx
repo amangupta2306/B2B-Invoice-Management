@@ -6,6 +6,7 @@ import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Invoice } from "@prisma/client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,15 +17,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { format } from "date-fns";
 import HoverCardToolTip from "@/components/hover-card-tooltip";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-};
-
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Invoice>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -60,23 +56,18 @@ export const columns: ColumnDef<Payment>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("invoiceNo")}</div>
-    ),
+    cell: ({ row }) => {
+      const id = row.original.id;
+      return (
+        <Link href={`/invoices/${id}`}>
+          {row.getValue("invoiceNo")}
+        </Link>
+      )
+    },
   },
   {
     accessorKey: "invoiceDate",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Invoice Date
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: "Invoice Date",
     cell: ({ row }) => (
       <div className="lowercase">{format(row.getValue("invoiceDate"), 'dd-MM-yyyy')}</div>
     ),
@@ -136,7 +127,7 @@ export const columns: ColumnDef<Payment>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original;
+      const { id } = row.original;
 
       return (
         <DropdownMenu>
@@ -147,18 +138,38 @@ export const columns: ColumnDef<Payment>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => navigator.clipboard.writeText(id)}
             >
               Edit Invoice
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Print Invoice</DropdownMenuItem>
-            <DropdownMenuItem>Download Invoice</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href={`/invoices/${id}`}>
+                Print Invoice
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <PrintInvoive invoiceId={id}/>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
     },
   },
 ];
+
+
+export const PrintInvoive = ({ invoiceId }: { invoiceId: string }) => {
+  const router = useRouter();
+
+  const handlePrint = () => {
+    router.push(`/invoices/${invoiceId}?print=true`);
+  };
+
+  return (
+    <DropdownMenuItem>
+      <button onClick={handlePrint} className="bg-customColor-100 text-customColor-50 rounded-md p-2">Print Invoice</button>
+    </DropdownMenuItem>
+  );
+};

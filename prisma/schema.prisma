@@ -67,6 +67,7 @@ model Invoice {
   totalTaxableValue Float
   totalTaxGST       Float
   totalInvoiceValue Float
+  isOutsideDelhiInvoice Boolean
 
   customerId String   @db.ObjectId
   customer   Customer @relation(fields: [customerId], references: [id])

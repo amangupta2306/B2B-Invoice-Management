@@ -14,6 +14,7 @@ export const CreateInvoice = async (values: any) => {
         totalInvoiceValue: values.values.totalInvoiceValue,
         totalTaxGST: values.values.totalTaxGST,
         totalTaxableValue: values.values.totalTaxableValue,
+        isOutsideDelhiInvoice: values.isOutsideDelhiInvoice,
         pricedProducts: {
           create: values.productPrices.map((product: any) => {
             return {

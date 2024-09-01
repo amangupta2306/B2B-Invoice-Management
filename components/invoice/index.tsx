@@ -33,9 +33,6 @@ export const Invoice = async () => {
             lastInvoiceNo={invoices?.invoiceNo || null}
           />
         </CardContent>
-        {/* <CardFooter>
-                    <p>Card Footer</p>
-                </CardFooter> */}
       </Card>
     </div>
   );

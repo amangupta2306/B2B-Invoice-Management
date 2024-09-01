@@ -1,24 +1,33 @@
 "use client"
 
-import { ReactInstance, useRef } from 'react';
+import { ReactInstance, useEffect, useRef } from 'react';
 import { ToWords } from 'to-words';
 import { formatCurrencyForIndia } from "@/lib/utils";
 import { useReactToPrint } from 'react-to-print';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { format } from 'date-fns'
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
 
+    const router = useRouter();
+    const searchParams = useSearchParams()
     const toWords = new ToWords();
 
     const unfilledArray = Array.from({ length: 17 - invoiceInfo.pricedProducts?.length }, (_, i) => i + 1);
-
     const componentRef = useRef<HTMLDivElement | null>(null);
 
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
+        onAfterPrint: () => {
+            router.back();
+        },
     });
+
+    useEffect(() => {
+        if (searchParams.get('print')) handlePrint();
+    }, []);
 
     const printDocument = () => {
         const input = document.getElementById("divToPrint");

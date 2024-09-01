@@ -78,17 +78,12 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
     },
   })
 
-  const onSubmit = async (values: z.infer<typeof formSchemaInvoice>) => {
-    try {
-      await CreateInvoice({ values, productPrices })
-      form.reset()
-    } catch (error) {
-      console.log(error, 'Error in creating invoice')
-    }
-  }
-
   const currCustomerId = form.watch("customerId")
   const selectProduct = form.watch("productDetails")
+  
+  const currCustomer = customers.find((customer) => customer.id === currCustomerId)
+  const isOutsideDelhiInvoice = (currCustomer?.state.toLowerCase() !== 'delhi') || false
+
 
   useEffect(() => {
     const newSelecctedProducts = selectProduct.map((product: any) => {
@@ -131,7 +126,15 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
     }
   };
 
-  const currCustomer = customers.find((customer) => customer.id === currCustomerId)
+  const onSubmit = async (values: z.infer<typeof formSchemaInvoice>) => {
+    try {
+      await CreateInvoice({ values, isOutsideDelhiInvoice, productPrices })
+      form.reset()
+    } catch (error) {
+      console.log(error, 'Error in creating invoice')
+    }
+  }
+
 
   return (
     <Form {...form}>
@@ -287,8 +290,6 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
           <Label htmlFor="customerAddress">Address</Label>
           <Input id="customerAddress" disabled value={currCustomer?.address || ""} placeholder="address" />
         </div>
-
-
         <div className="flex gap-5 w-full">
           <div className="flex-1">
             <Label htmlFor="customerGST">GST</Label>
@@ -302,7 +303,6 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
             <Label htmlFor="customerStateCode">State Code</Label>
             <Input id="customerStateCode" value={currCustomer?.stateCode || ""} disabled placeholder="State Code" />
           </div>
-
         </div>
 
         <div>
@@ -356,27 +356,38 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
                 />
               </div>
               <div className="flex-1">
-                <Label >Taxable Value</Label>
+                <Label>Taxable Value</Label>
                 <Input disabled value={product.taxableValue} placeholder="Taxable Value" />
               </div>
+              {isOutsideDelhiInvoice ? (<>
+                <div className="flex-1">
+                  <Label>IGST Rate</Label>
+                  <Input disabled value={product.cgstRate + product.sgstRate} placeholder="cgstRate" />
+                </div>
+                <div className="flex-1">
+                  <Label>IGST Amt</Label>
+                  <Input disabled value={product.cgstAmt + product.sgstAmt} placeholder="sgstAmt" />
+                </div>
+              </>) : (<>
+                <div className="flex-1">
+                  <Label>Cgst Rate</Label>
+                  <Input disabled value={product.cgstRate} placeholder="cgstRate" />
+                </div>
+                <div className="flex-1">
+                  <Label>Sgst Rate</Label>
+                  <Input disabled value={product.sgstRate} placeholder="sgstRate" />
+                </div>
+                <div className="flex-1">
+                  <Label>Cgst Amt</Label>
+                  <Input disabled value={product.cgstAmt} placeholder="cgstAmt" />
+                </div>
+                <div className="flex-1">
+                  <Label>Sgst Amt</Label>
+                  <Input disabled value={product.sgstAmt} placeholder="sgstAmt" />
+                </div>
+              </>)}
               <div className="flex-1">
-                <Label >Cgst Rate</Label>
-                <Input disabled value={product.cgstRate} placeholder="cgstRate" />
-              </div>
-              <div className="flex-1">
-                <Label >Sgst Rate</Label>
-                <Input disabled value={product.sgstRate} placeholder="sgstRate" />
-              </div>
-              <div className="flex-1">
-                <Label >Cgst Amt</Label>
-                <Input disabled value={product.cgstAmt} placeholder="cgstAmt" />
-              </div>
-              <div className="flex-1">
-                <Label >Sgst Amt</Label>
-                <Input disabled value={product.sgstAmt} placeholder="sgstAmt" />
-              </div>
-              <div className="flex-1">
-                <Label >Product Total Value</Label>
+                <Label>Product Total Value</Label>
                 <Input disabled value={product.productTotalValue} placeholder="productTotalValue" />
               </div>
             </div>
