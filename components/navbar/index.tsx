@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { CheckCircle2Icon } from "lucide-react";
 
@@ -12,15 +12,30 @@ import { SearchBar } from "./search-bar";
 
 export const Navbar = () => {
     const [isCollapsed, setIsCollapsed] = useState(false);
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth < 768) {
+                setIsCollapsed(true);
+            } else {
+                setIsCollapsed(false);
+            }
+        };
+
+        handleResize(); // Set initial state
+        window.addEventListener('resize', handleResize);
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     return (
         <div className="relative">
-            <div className="fixed w-screen flex p-2 border-b lg:space-x-4">
+            <div className="fixed w-screen flex py-2 lg:pl-2 border-b lg:space-x-4">
                 <div className={cn(
-                    isCollapsed ? "pl-px" : "w-80"
+                    isCollapsed ? "" : "w-80"
                 )}>
                     <AccountSwitcher isCollapsed={isCollapsed} />
                 </div>
-                <div className="flex justify-between w-full pr-3">
+                <div className="flex justify-between w-full space-x-2 pr-3">
                     {isCollapsed && <DarkModeToggle />}
 
                     <SearchBar
@@ -39,9 +54,9 @@ export const Navbar = () => {
                     />
                 </div>
             </div>
-            <aside className={cn("fixed left-0 top-14 p-2 border border-l-0 h-screen "
+            <aside className={cn("fixed left-0 top-14 lg:p-2 border border-l-0 h-screen "
                 + "transition-all duration-200 ease-in-out bg-background border-r",
-                isCollapsed ? "w-[4.3rem]" : "w-72"
+                isCollapsed ? "w-[3.1rem]" : "w-72"
             )}>
 
                 <NavbarItems isCollapsed={isCollapsed} />

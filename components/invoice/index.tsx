@@ -20,13 +20,13 @@ export const Invoice = async () => {
   });
 
   return (
-    <div className="p-4">
+    <div className="p-2 lg:p-4">
       <Card>
-        <CardHeader>
+        <CardHeader className="px-3 lg:px-6">
           <CardTitle>Create Invoice</CardTitle>
           <CardDescription>Invoice </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-3 lg:px-6">
           <InvoiceForm
             customers={customers || []}
             products={products || []}

@@ -67,7 +67,7 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
   const [productPrices, setProductPrices] = useState<any[]>([])
 
   const currDate = new Date();
-  const lastMonth = new Date(currDate.setMonth(currDate.getMonth() - 1)).toLocaleString("en-US", { month: 'long' }); 
+  const lastMonth = new Date(currDate.setMonth(currDate.getMonth() - 1)).toLocaleString("en-US", { month: 'long' });
 
   const form = useForm({
     resolver: zodResolver(formSchemaInvoice),
@@ -150,7 +150,7 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <div className="flex gap-5 w-full justify-center items-center">
+        <div className="lg:flex gap-5 w-full justify-center items-center">
           <FormField
             control={form.control}
             name="invoiceNo"
@@ -368,64 +368,70 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
 
         {productPrices?.map((product: any, index: number) => {
           return (
-            <div key={product.id} className="mt-3 flex gap-5 ">
-              <div className="flex-1">
-                <Label>Product Name</Label>
-                <Input disabled value={product.label} placeholder="Product Name" />
+            <div key={product.id} className="mt-3 lg:flex gap-5 ">
+              <div className="grid grid-cols-2 lg:flex gap-3">
+                <div className="col-span-2 lg:flex-1">
+                  <Label>Product Name</Label>
+                  <Input disabled value={product.label} placeholder="Product Name" />
+                </div>
+                <div className="flex-1">
+                  <Label>Qty</Label>
+                  <Input
+                    type="number"
+                    value={product.qty}
+                    // name, value, id, item
+                    onChange={(e) => handleProductInfoChange('qty', e.target.value, product.id, product)}
+                    placeholder="Quantity"
+                  />
+                </div>
+                <div className="flex-1">
+                  <Label>Rate</Label>
+                  <Input
+                    type="number"
+                    value={product.rate}
+                    onChange={(e) => handleProductInfoChange('rate', e.target.value, product.id, product)}
+                    placeholder="Rate"
+                  />
+                </div>
               </div>
-              <div className="flex-1">
-                <Label>Qty</Label>
-                <Input
-                  type="number"
-                  value={product.qty}
-                  // name, value, id, item
-                  onChange={(e) => handleProductInfoChange('qty', e.target.value, product.id, product)}
-                  placeholder="Quantity"
-                />
+              <div className="grid grid-cols-2 lg:flex gap-3">
+                <div className="col-span-2 lg:flex-1">
+                  <Label>Taxable Value</Label>
+                  <Input disabled value={product.taxableValue} placeholder="Taxable Value" />
+                </div>
+                {isOutsideDelhiInvoice ? (<>
+                  <div className="flex-1">
+                    <Label>IGST Rate</Label>
+                    <Input disabled value={product.cgstRate + product.sgstRate} placeholder="cgstRate" />
+                  </div>
+                  <div className="flex-1">
+                    <Label>IGST Amt</Label>
+                    <Input disabled value={product.cgstAmt + product.sgstAmt} placeholder="sgstAmt" />
+                  </div>
+                </>) : (<>
+                  <div className="flex-1">
+                    <Label>Cgst Rate</Label>
+                    <Input disabled value={product.cgstRate} placeholder="cgstRate" />
+                  </div>
+                  <div className="flex-1">
+                    <Label>Sgst Rate</Label>
+                    <Input disabled value={product.sgstRate} placeholder="sgstRate" />
+                  </div>
+                  <div className="flex-1">
+                    <Label>Cgst Amt</Label>
+                    <Input disabled value={product.cgstAmt} placeholder="cgstAmt" />
+                  </div>
+                  <div className="flex-1">
+                    <Label>Sgst Amt</Label>
+                    <Input disabled value={product.sgstAmt} placeholder="sgstAmt" />
+                  </div>
+                </>)}
               </div>
-              <div className="flex-1">
-                <Label>Rate</Label>
-                <Input
-                  type="number"
-                  value={product.rate}
-                  onChange={(e) => handleProductInfoChange('rate', e.target.value, product.id, product)}
-                  placeholder="Rate"
-                />
-              </div>
-              <div className="flex-1">
-                <Label>Taxable Value</Label>
-                <Input disabled value={product.taxableValue} placeholder="Taxable Value" />
-              </div>
-              {isOutsideDelhiInvoice ? (<>
+              <div className=" lg:flex">
                 <div className="flex-1">
-                  <Label>IGST Rate</Label>
-                  <Input disabled value={product.cgstRate + product.sgstRate} placeholder="cgstRate" />
+                  <Label>Product Total Value</Label>
+                  <Input disabled value={product.productTotalValue} placeholder="productTotalValue" />
                 </div>
-                <div className="flex-1">
-                  <Label>IGST Amt</Label>
-                  <Input disabled value={product.cgstAmt + product.sgstAmt} placeholder="sgstAmt" />
-                </div>
-              </>) : (<>
-                <div className="flex-1">
-                  <Label>Cgst Rate</Label>
-                  <Input disabled value={product.cgstRate} placeholder="cgstRate" />
-                </div>
-                <div className="flex-1">
-                  <Label>Sgst Rate</Label>
-                  <Input disabled value={product.sgstRate} placeholder="sgstRate" />
-                </div>
-                <div className="flex-1">
-                  <Label>Cgst Amt</Label>
-                  <Input disabled value={product.cgstAmt} placeholder="cgstAmt" />
-                </div>
-                <div className="flex-1">
-                  <Label>Sgst Amt</Label>
-                  <Input disabled value={product.sgstAmt} placeholder="sgstAmt" />
-                </div>
-              </>)}
-              <div className="flex-1">
-                <Label>Product Total Value</Label>
-                <Input disabled value={product.productTotalValue} placeholder="productTotalValue" />
               </div>
             </div>
           );

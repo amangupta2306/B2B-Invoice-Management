@@ -12,8 +12,8 @@ import prisma from "@/lib/db";
 export const Customer = async () => {
     const dbCustomers = await prisma.customer.findMany();
     return (
-        <div className="flex gap-3 p-3"> 
-            <Card className="w-1/3">
+        <div className="lg:flex space-y-2 lg:space-y-0 gap-3 p-2">
+            <Card className="lg:w-1/3">
                 <CardHeader>
                     <CardTitle>Create Customer</CardTitle>
                     <CardDescription>Customer</CardDescription>
@@ -22,13 +22,13 @@ export const Customer = async () => {
                     <CustomerForm />
                 </CardContent>
             </Card>
-            <Card className="w-2/3">
+            <Card className="lg:w-2/3">
                 <CardHeader>
                     <CardTitle>Customer List</CardTitle>
                     <CardDescription>Customer Table</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <CustomerTable customers={dbCustomers}  />
+                    <CustomerTable customers={dbCustomers} />
                 </CardContent>
             </Card>
         </div>

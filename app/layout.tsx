@@ -24,11 +24,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html suppressHydrationWarning lang="en" >
       <head />
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased",
+          "min-h-screen bg-background font-sans  antialiased",
           fontSans.variable
         )}
       >
@@ -39,8 +39,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navbar />
-
-          <main className="pl-72 pt-14">
+          <main className="pl-12 pt-14 lg:pl-72 lg:pt-14">
             {children}
           </main>
 

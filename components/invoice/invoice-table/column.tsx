@@ -83,7 +83,9 @@ export const columns: ColumnDef<Invoice>[] = [
     header: "Address",
     accessorKey: "address",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("address")}</div>
+      <HoverCardToolTip side="top" label="Address" align="center" className="min-w-max">
+        <div className="capitalize">{row.getValue("address")}</div>
+      </HoverCardToolTip>
     ),
   },
   {
@@ -150,7 +152,7 @@ export const columns: ColumnDef<Invoice>[] = [
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <PrintInvoive invoiceId={id}/>
+              <PrintInvoive invoiceId={id} />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
