@@ -6,27 +6,26 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { CustomerTable } from "./customer-table"
+import { CustomerTable } from "./customer-table/customer-table"
 import prisma from "@/lib/db";
 
 export const Customer = async () => {
     const dbCustomers = await prisma.customer.findMany();
     return (
-        <div className="flex gap-3">
-            <Card className="flex-1">
+        <div className="flex gap-3 p-3">
+            <Card className="w-1/3">
                 <CardHeader>
-                    <CardTitle>Card Title</CardTitle>
-                    <CardDescription>Card Description</CardDescription>
+                    <CardTitle>Create Customer</CardTitle>
+                    <CardDescription>Customer</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <CustomerForm />
-
                 </CardContent>
             </Card>
-            <Card className="flex-1">
+            <Card className="w-2/3">
                 <CardHeader>
-                    <CardTitle>Card Title</CardTitle>
-                    <CardDescription>Card Description</CardDescription>
+                    <CardTitle>Customer List</CardTitle>
+                    <CardDescription>Customer Table</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <CustomerTable customers={dbCustomers}  />

@@ -23,7 +23,6 @@ interface NavProps {
 
 export function NavbarItems({ links = LINKS, isCollapsed = false }: NavProps) {
     const pathname = usePathname()
-    console.log(pathname)
     return (
         <div
             data-collapsed={isCollapsed}

@@ -1,13 +1,13 @@
 "use client"
 
 import { columns } from "./column"
-import { DataTable } from "./data-table"
 import { Invoice } from "@prisma/client"
+import { DataTableInvoice } from "./data-table"
 
 export const InvoiceTable = ({ invoices }: { invoices: Invoice[] }) => {
   return (
-    <div className="container mx-auto py-10">
-      <DataTable data={invoices || []} columns={columns} />
+    <div className="p-10">
+      <DataTableInvoice data={invoices || []} columns={columns} />
     </div>
   )
 }

@@ -57,7 +57,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                                     <p className="font-bold">MUKESH TRADERS</p>
                                     <p>House No. 238, Ground Floor</p>
                                     <p>RANGPURI NEW DELHI</p>
-                                    <p>GSTIN/UIN : 514781548</p>
+                                    <p>GSTIN/UIN : 07ARPPG9570K2Z2</p>
                                     <p>State Name : Delhi, Code : 07</p>
                                 </div>
                                 <div className="border-t border-r border-black px-1">
@@ -272,22 +272,22 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                         <div>
                             <span className='px-1'>Tax Amount (in words) : <span className="font-bold">INR {toWords.convert(invoiceInfo?.totalTaxGST, { currency: true })}</span></span>
                             <div className="flex w-full">
-                                <div className='w-96'>&nbsp;</div>
+                                <div className='w-72'>&nbsp;</div>
                                 <div className='w-full'>
                                     <p>Company&apos;s Bank Details</p>
                                     <table >
                                         <thead>
                                             <tr>
                                                 <td>Bank Name</td>
-                                                <td className="font-bold">: BANK OF BARODA</td>
+                                                <td className="font-bold">: HDFC BANK</td>
                                             </tr>
                                             <tr>
                                                 <td>A/c No.</td>
-                                                <td className="font-bold">: 769302000000450</td>
+                                                <td className="font-bold">: 50200047403351</td>
                                             </tr>
                                             <tr>
-                                                <td>Branch & IFS Code</td>
-                                                <td className="font-bold">: MAHIPALPUR NEW DELHI & BARBOVJMAHP</td>
+                                                <td>Branch & IFSC Code</td>
+                                                <td className="font-bold">: OKHLA INDUSTRIAL AREA PHASE II & HDFC0004736</td>
                                             </tr>
                                         </thead>
                                     </table>

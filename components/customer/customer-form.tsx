@@ -48,13 +48,13 @@ export function CustomerForm() {
   });
 
   async function onSubmit(data: z.infer<typeof FormSchemaCustomer>) {
-    console.log(data);
     await CreateCustomer({ values: data });
+    form.reset();
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="customerName"
@@ -114,7 +114,7 @@ export function CustomerForm() {
             <FormItem>
               <FormLabel>State Code</FormLabel>
               <FormControl>
-                <Input placeholder="stateCode" {...field} />
+                <Input placeholder="State Code" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
