@@ -15,9 +15,6 @@ export const CreateInvoice = async (values: any): Promise<boolean> => {
         totalInvoiceValue: values.values.totalInvoiceValue.toFixed(2),
         totalTaxGST: values.values.totalTaxGST.toFixed(2),
         totalTaxableValue: values.values.totalTaxableValue.toFixed(2),
-        totalInvoiceValue: values.values.totalInvoiceValue.toFixed(2),
-        totalTaxGST: values.values.totalTaxGST.toFixed(2),
-        totalTaxableValue: values.values.totalTaxableValue.toFixed(2),
         isOutsideDelhiInvoice: values.isOutsideDelhiInvoice,
         pricedProducts: {
           create: values.productPrices.map((product: any) => {
