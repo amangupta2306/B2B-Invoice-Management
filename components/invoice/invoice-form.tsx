@@ -36,6 +36,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { CreateInvoice } from "@/action/invoice";
 
 const formSchemaInvoice = z.object({
   invoiceNo: z.string().min(1, "Invoice number is required."),
@@ -78,14 +79,12 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
   })
 
   const onSubmit = async (values: z.infer<typeof formSchemaInvoice>) => {
-    const res = await fetch("/api/invoice", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ values, productPrices })
-    })
-    form.reset()
+    try {
+      await CreateInvoice({ values, productPrices })
+      form.reset()
+    } catch (error) {
+      console.log(error, 'Error in creating invoice')
+    }
   }
 
   const currCustomerId = form.watch("customerId")
