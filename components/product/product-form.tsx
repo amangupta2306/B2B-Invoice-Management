@@ -24,12 +24,8 @@ const FormSchemaProduct = z.object({
   hsnCode: z.string().min(2, {
     message: "Address must be at least 2 characters.",
   }),
-  cgstRate: z.string().min(1, {
-    message: "GSTIN/UIN must be at least 2 characters.",
-  }),
-  sgstRate: z.string().min(1, {
-    message: "State must be at least 2 characters.",
-  }),
+  cgstRate: z.string(),
+  sgstRate: z.string()
 });
 
 export function ProductForm() {
