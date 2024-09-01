@@ -35,11 +35,11 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
         html2canvas(input)?.then((canvas) => {
             const imgData = canvas.toDataURL("image/png");
             const pdf = new jsPDF();
-            pdf.addImage(imgData, "JPEG", 3, 3, canvas.width * 0.155, canvas.height * 0.155);
+            pdf.addImage(imgData, "JPEG", 3, 3, canvas.width * 0.29, canvas.height * 0.25);
             pdf.save(`Invoice.pdf`);
             pdf.autoPrint();
         });
-    };
+    };5
 
     const totalCgstAmt = invoiceInfo?.pricedProducts?.reduce((sum: number, product: any) => sum + product.cgstAmt, 0)
     const totalSgstAmt = invoiceInfo?.pricedProducts?.reduce((sum: number, product: any) => sum + product.sgstAmt, 0)
@@ -72,7 +72,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                                 <div className="border-t border-r border-black px-1">
                                     <p>Buyer (Bill to)</p>
                                     <p className="font-bold">{invoiceInfo?.customer?.customerName}</p>
-                                    <p>{invoiceInfo?.customer?.address}</p>
+                                    <p className='w-64'>{invoiceInfo?.customer?.address}</p>
                                     <p>GSTIN/UIN : {invoiceInfo?.customer?.gstIn}</p>
                                     <p>State Name : {invoiceInfo?.customer?.state}, Code : {invoiceInfo?.customer?.stateCode}</p>
                                 </div>
@@ -91,7 +91,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                                     </span>
                                     <span className="border-b border-r border-black px-1 h-10">
                                         <p>Month</p>
-                                        <p className="font-bold">{invoiceInfo?.monthOf}</p>
+                                        <p className="font-bold">{invoiceInfo?.monthOf}, {invoiceInfo?.yearOf}</p>
                                     </span>
                                     <span className="border-b border-black px-1 h-10">
                                         <p>Mode/Terms of Payment</p>

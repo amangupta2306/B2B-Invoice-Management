@@ -3,13 +3,14 @@
 import prisma from "@/lib/db"
 import { revalidatePath } from "next/cache"
 
-export const CreateInvoice = async (values: any) => {
+export const CreateInvoice = async (values: any): Promise<boolean> => {
   try {
     const invoice = await prisma.invoice.create({
       data: {
         invoiceNo: values.values.invoiceNo || 1,
         invoiceDate: values.values.invoiceDate,
         monthOf: values.values.monthOf,
+        yearOf: values.values.yearOf,
         customerId: values.values.customerId,
         totalInvoiceValue: values.values.totalInvoiceValue,
         totalTaxGST: values.values.totalTaxGST,
@@ -31,10 +32,9 @@ export const CreateInvoice = async (values: any) => {
       }
     })
     revalidatePath("/")
-
-    return invoice
-    
+    return true
   } catch (error) {
     console.log(error)
+    return false
   }
 }   

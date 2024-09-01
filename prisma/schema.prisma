@@ -63,6 +63,7 @@ model Invoice {
   invoiceNo   String @unique
   invoiceDate DateTime @default(now())
   monthOf     String
+  yearOf      String
 
   totalTaxableValue Float
   totalTaxGST       Float

@@ -37,11 +37,13 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { CreateInvoice } from "@/action/invoice";
+import { useRouter } from "next/navigation";
 
 const formSchemaInvoice = z.object({
   invoiceNo: z.string().min(1, "Invoice number is required."),
   invoiceDate: z.date(),
   monthOf: z.string().min(1, "Please select a month."),
+  yearOf: z.string().min(1, "Please select a year."),
   customerId: z.string().min(1, "Please select a Customer."),
   // productDetails: z.array(
   //   z.object({
@@ -64,12 +66,16 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
   const productsOpt = products?.map(product => ({ label: product.productName, value: product.id, ...product }))
   const [productPrices, setProductPrices] = useState<any[]>([])
 
+  const currDate = new Date();
+  const lastMonth = new Date(currDate.setMonth(currDate.getMonth() - 1)).toLocaleString("en-US", { month: 'long' }); 
+
   const form = useForm({
     resolver: zodResolver(formSchemaInvoice),
     defaultValues: {
-      invoiceNo: (((lastInvoiceNo ? Number(lastInvoiceNo) : 1001) + 1) || 0).toString(),
+      invoiceNo: (((lastInvoiceNo ? Number(lastInvoiceNo) : 1000) + 1) || 0).toString(),
       invoiceDate: new Date(),
-      monthOf: new Date().toLocaleString("en-US", { month: 'long' }),
+      monthOf: lastMonth,
+      yearOf: currDate.getFullYear().toString(),
       customerId: "",
       productDetails: [],
       totalInvoiceValue: 0,
@@ -80,7 +86,7 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
 
   const currCustomerId = form.watch("customerId")
   const selectProduct = form.watch("productDetails")
-  
+
   const currCustomer = customers.find((customer) => customer.id === currCustomerId)
   const isOutsideDelhiInvoice = (currCustomer?.state.toLowerCase() !== 'delhi') || false
 
@@ -128,8 +134,13 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
 
   const onSubmit = async (values: z.infer<typeof formSchemaInvoice>) => {
     try {
-      await CreateInvoice({ values, isOutsideDelhiInvoice, productPrices })
-      form.reset()
+      const isSuccess = await CreateInvoice({ values, isOutsideDelhiInvoice, productPrices })
+      console.log(isSuccess, 'isSuccess')
+      if (isSuccess) {
+        location.reload()
+        form.reset()
+      }
+
     } catch (error) {
       console.log(error, 'Error in creating invoice')
     }
@@ -185,6 +196,32 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
               </FormItem>
             )}
           />
+
+          <FormField
+            control={form.control}
+            name="yearOf"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>Select Year</FormLabel>
+                <FormControl>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <SelectTrigger id="year">
+                      <SelectValue placeholder="Year" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Array.from({ length: 10 }, (_, i) => (
+                        <SelectItem key={i} value={`${new Date().getFullYear() + i}`}>
+                          {new Date().getFullYear() - i}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
 
           <FormField
             control={form.control}
