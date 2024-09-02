@@ -47,7 +47,7 @@ model Customer {
   id           String @id @default(auto()) @map("_id") @db.ObjectId
   customerName String @db.String
   address      String @db.String
-  gstIn        String @unique @db.String
+  gstIn        String @db.String
   state        String @db.String
   stateCode    Int    @db.Int
 
