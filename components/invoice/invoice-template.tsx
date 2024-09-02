@@ -97,7 +97,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                 <div className="border-r border-gray-800 px-1">
                   <p className="font-bold">MUKESH TRADERS</p>
                   <p className="w-52">
-                    House No. 238, Ground Floor, RANGPURI NEAR OLD SHIV MANDIR,
+                    HOUSE NO. 238, GROUND FLOOR, RANGPURI NEAR OLD SHIV MANDIR,
                     NEW DELHI-110037
                   </p>
                   <p>GSTIN/UIN : 07ARPPG9570K2Z2</p>
@@ -231,7 +231,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                 <div className="border-r border-gray-800 w-20 ">&nbsp;</div>
                 <div className="border-r border-gray-800 w-20 ">&nbsp;</div>
                 <div className="border-r border-gray-800 w-20 ">&nbsp;</div>
-                <div className="w-20 text-center">
+                <div className="w-20 text-center font-bold">
                   {formatCurrencyForIndia(invoiceInfo?.totalInvoiceValue)}
                 </div>
               </div>
@@ -384,7 +384,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                   </div>
                 </div>
 
-                <div className="flex text-center">
+                <div className="flex text-center font-bold">
                   <div className="w-20 border-b border-r border-gray-800">
                     {invoiceInfo?.totalTaxableValue}
                   </div>
