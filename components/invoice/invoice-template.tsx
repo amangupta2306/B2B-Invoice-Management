@@ -74,7 +74,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                                     <p className="font-bold">{invoiceInfo?.customer?.customerName}</p>
                                     <p className='w-64'>{invoiceInfo?.customer?.address}</p>
                                     <p>GSTIN/UIN : {invoiceInfo?.customer?.gstIn}</p>
-                                    <p>State Name : {invoiceInfo?.customer?.state}, Code : {invoiceInfo?.customer?.stateCode}</p>
+                                    <p>State Name : {invoiceInfo?.customer?.state}, Code : 0{invoiceInfo?.customer?.stateCode}</p>
                                 </div>
                             </div>
                             <div className="w-[48%]">

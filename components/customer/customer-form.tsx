@@ -62,7 +62,7 @@ export function CustomerForm() {
             <FormItem>
               <FormLabel>Customer Name</FormLabel>
               <FormControl>
-                <Input placeholder="Customer Name" {...field} />
+                <Input className="uppercase" placeholder="Customer Name" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -75,7 +75,7 @@ export function CustomerForm() {
             <FormItem>
               <FormLabel>Address</FormLabel>
               <FormControl>
-                <Input placeholder="Address" {...field} />
+                <Input className="uppercase" placeholder="Address" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -101,7 +101,7 @@ export function CustomerForm() {
             <FormItem>
               <FormLabel>State</FormLabel>
               <FormControl>
-                <Input placeholder="State" {...field} />
+                <Input className="uppercase" placeholder="State" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

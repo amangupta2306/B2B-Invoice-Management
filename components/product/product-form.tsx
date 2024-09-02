@@ -54,7 +54,7 @@ export function ProductForm() {
             <FormItem>
               <FormLabel>Product Name</FormLabel>
               <FormControl>
-                <Input placeholder="Product Name" {...field} />
+                <Input className="uppercase" placeholder="Product Name" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
