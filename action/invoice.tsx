@@ -32,6 +32,7 @@ export const CreateInvoice = async (values: any): Promise<boolean> => {
       }
     })
     revalidatePath("/")
+    revalidatePath("/invoices")
     return true
   } catch (error) {
     console.log(error);
