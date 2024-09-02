@@ -8,6 +8,7 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { format } from "date-fns";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Button } from "../ui/button";
 
 export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
   const router = useRouter();
@@ -65,19 +66,13 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
   ).toFixed(2);
   return (
     <div className="max-w-screen-md container mx-auto">
-      <div className="flex justify-center mb-2">
-        <button
-          onClick={handlePrint}
-          className="bg-customColor-100 text-customColor-50 rounded-md p-2"
-        >
+      <div className="flex justify-center mt-6 gap-3">
+        <Button onClick={handlePrint} variant="secondary">
           Print Invoice
-        </button>
-        <button
-          onClick={printDocument}
-          className="bg-customColor-100 text-customColor-50 rounded-md p-2 ml-2"
-        >
+        </Button>
+        <Button onClick={printDocument} variant="secondary">
           Download PDF
-        </button>
+        </Button>
       </div>
       <div ref={componentRef} id="divToPrint" className="text-xs text-black">
         <header className="pt-5">
@@ -156,10 +151,10 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                 <div className="border-r border-gray-800 w-[322px] ">
                   Description of Goods
                 </div>
-                <div className="border-r border-gray-800 w-20 ">HSN/SAC</div>
-                <div className="border-r border-gray-800 w-20 ">Quantity</div>
-                <div className="border-r border-gray-800 w-20 ">Rate</div>
-                <div className=" w-20 ">Amount</div>
+                <div className="border-r border-gray-800 w-16">HSN/SAC</div>
+                <div className="border-r border-gray-800 w-20">Quantity</div>
+                <div className="border-r border-gray-800 w-20">Rate</div>
+                <div className="w-20">Amount</div>
               </div>
 
               <div>
@@ -169,7 +164,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                     <div className="border-r border-gray-800 w-[322px] text-start px-1 font-bold">
                       {item?.product?.productName}
                     </div>
-                    <div className="border-r border-gray-800 w-20">
+                    <div className="border-r border-gray-800 w-16">
                       {item?.product?.hsnCode}
                     </div>
                     <div className="border-r border-gray-800 w-20">
@@ -178,7 +173,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                     <div className="border-r border-gray-800 w-20">
                       {item?.rate}
                     </div>
-                    <div className="w-20">{item?.taxableValue}</div>
+                    <div className="w-20 text-end">{item?.taxableValue}</div>
                   </div>
                 ))}
               </div>
@@ -194,20 +189,20 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                     <div className="border-r border-gray-800 w-[322px] text-end px-1 italic font-bold">
                       CGST %
                     </div>
-                    <div className="border-r border-gray-800 w-20 ">&nbsp;</div>
-                    <div className="border-r border-gray-800 w-20 ">&nbsp;</div>
-                    <div className="border-r border-gray-800 w-20 ">&nbsp;</div>
-                    <div className=" w-20 ">{totalCgstAmt}</div>
+                    <div className="border-r border-gray-800 w-16">&nbsp;</div>
+                    <div className="border-r border-gray-800 w-20">&nbsp;</div>
+                    <div className="border-r border-gray-800 w-20">&nbsp;</div>
+                    <div className="w-20 text-end">{totalCgstAmt}</div>
                   </div>
                   <div className=" w-full flex border-gray-800 items-center text-center">
                     <div className="border-r border-gray-800 w-10 ">&nbsp;</div>
                     <div className="border-r border-gray-800 w-[322px] text-end px-1 italic font-bold">
                       SGST %
                     </div>
-                    <div className="border-r border-gray-800 w-20 ">&nbsp;</div>
-                    <div className="border-r border-gray-800 w-20 ">&nbsp;</div>
-                    <div className="border-r border-gray-800 w-20 ">&nbsp;</div>
-                    <div className=" w-20 ">{totalSgstAmt}</div>
+                    <div className="border-r border-gray-800 w-16">&nbsp;</div>
+                    <div className="border-r border-gray-800 w-20">&nbsp;</div>
+                    <div className="border-r border-gray-800 w-20">&nbsp;</div>
+                    <div className="w-20 text-end">{totalSgstAmt}</div>
                   </div>
                 </>
               ) : (
@@ -216,10 +211,12 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                   <div className="border-r border-gray-800 w-[322px] text-end px-1 italic font-bold">
                     IGST %
                   </div>
-                  <div className="border-r border-gray-800 w-20 ">&nbsp;</div>
-                  <div className="border-r border-gray-800 w-20 ">&nbsp;</div>
-                  <div className="border-r border-gray-800 w-20 ">&nbsp;</div>
-                  <div className=" w-20 ">{Number(totalSgstAmt) + Number(totalCgstAmt)}</div>
+                  <div className="border-r border-gray-800 w-16">&nbsp;</div>
+                  <div className="border-r border-gray-800 w-20">&nbsp;</div>
+                  <div className="border-r border-gray-800 w-20">&nbsp;</div>
+                  <div className="w-20 text-end">
+                    {Number(totalSgstAmt) + Number(totalCgstAmt)}
+                  </div>
                 </div>
               )}
 
@@ -228,10 +225,10 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                 <div className="border-r border-gray-800 w-[322px] text-end px-1">
                   Total
                 </div>
-                <div className="border-r border-gray-800 w-20 ">&nbsp;</div>
-                <div className="border-r border-gray-800 w-20 ">&nbsp;</div>
-                <div className="border-r border-gray-800 w-20 ">&nbsp;</div>
-                <div className="w-20 text-center font-bold">
+                <div className="border-r border-gray-800 w-16">&nbsp;</div>
+                <div className="border-r border-gray-800 w-20">&nbsp;</div>
+                <div className="border-r border-gray-800 w-20">&nbsp;</div>
+                <div className="w-20 text-end font-bold">
                   {formatCurrencyForIndia(invoiceInfo?.totalInvoiceValue)}
                 </div>
               </div>
@@ -338,7 +335,9 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                     {invoiceInfo.isOutsideDelhiInvoice ? (
                       <div className="flex">
                         <div className="w-12 border-b border-r border-gray-800">
-                          {Number(item?.product?.cgstRate) + Number(item?.product?.sgstRate)}%
+                          {Number(item?.product?.cgstRate) +
+                            Number(item?.product?.sgstRate)}
+                          %
                         </div>
                         <div className="w-16 border-b border-r border-gray-800">
                           {Number(item?.cgstAmt) + Number(item?.sgstAmt)}
@@ -367,7 +366,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                     )}
 
                     <div className="w-[93px] border-b border-gray-800">
-                    {Number(item?.cgstAmt) + Number(item?.sgstAmt)}
+                      {Number(item?.cgstAmt) + Number(item?.sgstAmt)}
                     </div>
                   </div>
                 </div>
@@ -394,7 +393,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                         &nbsp;
                       </div>
                       <div className="w-16 border-b border-r border-gray-800">
-                      {Number(totalCgstAmt) + Number(totalSgstAmt)}
+                        {Number(totalCgstAmt) + Number(totalSgstAmt)}
                       </div>
                     </div>
                   ) : (
@@ -482,7 +481,9 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
           </div>
         </main>
         <footer>
-          <p className="text-center mt-1">This is a Computer Generated Invoice</p>
+          <p className="text-center mt-1">
+            This is a Computer Generated Invoice
+          </p>
         </footer>
       </div>
     </div>
@@ -494,9 +495,9 @@ const UnfilledProductTable = () => {
     <div className="flex items-center text-center">
       <div className="border-r border-gray-800 w-10 ">&nbsp;</div>
       <div className="border-r border-gray-800 w-[322px] ">&nbsp;</div>
-      <div className="border-r border-gray-800 w-20 ">&nbsp;</div>
-      <div className="border-r border-gray-800 w-20 ">&nbsp;</div>
-      <div className="border-r border-gray-800 w-20 ">&nbsp;</div>
+      <div className="border-r border-gray-800 w-16">&nbsp;</div>
+      <div className="border-r border-gray-800 w-20">&nbsp;</div>
+      <div className="border-r border-gray-800 w-20">&nbsp;</div>
       <div className=" w-20 "></div>
     </div>
   );
