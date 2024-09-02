@@ -101,7 +101,7 @@ export function CustomerForm() {
             <FormItem>
               <FormLabel>State</FormLabel>
               <FormControl>
-                <Input className="uppercase" placeholder="State" {...field} />
+                <Input placeholder="State" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

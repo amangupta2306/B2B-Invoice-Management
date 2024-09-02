@@ -9,8 +9,8 @@ export const CreateCustomer = async (values: any) => {
             data: {
                 customerName: values.values.customerName.toUpperCase(),
                 address: values.values.address.toUpperCase(),
-                state: values.values.state.toUpperCase(),
                 gstIn: values.values.gstIn.toUpperCase(),
+                state: values.values.state,
                 stateCode: Number(values.values.stateCode)
             }
         })
