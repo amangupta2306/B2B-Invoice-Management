@@ -15,6 +15,7 @@ export const CreateCustomer = async (values: any) => {
             }
         })
         revalidatePath("/")
+        revalidatePath("/customers")
         return newCustomer
     } catch (error) {
         console.log(error)
