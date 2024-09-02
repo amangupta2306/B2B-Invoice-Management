@@ -53,13 +53,13 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
 
   const totalCgstAmt = Number(
     invoiceInfo?.pricedProducts?.reduce(
-      (sum: number, product: any) => sum + product.cgstAmt,
+      (sum: number, product: any) => sum + Number(product.cgstAmt),
       0
     )
   ).toFixed(2);
   const totalSgstAmt = Number(
     invoiceInfo?.pricedProducts?.reduce(
-      (sum: number, product: any) => sum + product.sgstAmt,
+      (sum: number, product: any) => sum + Number(product.sgstAmt),
       0
     )
   ).toFixed(2);
@@ -219,7 +219,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                   <div className="border-r border-gray-800 w-20 ">&nbsp;</div>
                   <div className="border-r border-gray-800 w-20 ">&nbsp;</div>
                   <div className="border-r border-gray-800 w-20 ">&nbsp;</div>
-                  <div className=" w-20 ">{totalSgstAmt + totalCgstAmt}</div>
+                  <div className=" w-20 ">{Number(totalSgstAmt) + Number(totalCgstAmt)}</div>
                 </div>
               )}
 
@@ -338,10 +338,10 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                     {invoiceInfo.isOutsideDelhiInvoice ? (
                       <div className="flex">
                         <div className="w-12 border-b border-r border-gray-800">
-                          {item?.product?.cgstRate + item?.product?.sgstRate}%
+                          {Number(item?.product?.cgstRate) + Number(item?.product?.sgstRate)}%
                         </div>
                         <div className="w-16 border-b border-r border-gray-800">
-                          {item?.cgstAmt + item?.sgstAmt}
+                          {Number(item?.cgstAmt) + Number(item?.sgstAmt)}
                         </div>
                       </div>
                     ) : (
@@ -367,7 +367,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                     )}
 
                     <div className="w-[93px] border-b border-gray-800">
-                      {item?.sgstAmt + item?.cgstAmt}
+                    {Number(item?.cgstAmt) + Number(item?.sgstAmt)}
                     </div>
                   </div>
                 </div>
@@ -394,7 +394,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                         &nbsp;
                       </div>
                       <div className="w-16 border-b border-r border-gray-800">
-                        {totalCgstAmt + totalSgstAmt}
+                      {Number(totalCgstAmt) + Number(totalSgstAmt)}
                       </div>
                     </div>
                   ) : (
@@ -421,11 +421,11 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
 
                   {invoiceInfo.isOutsideDelhiInvoice ? (
                     <div className="w-[93px] border-b border-gray-800">
-                      {totalCgstAmt + totalSgstAmt}
+                      {Number(totalCgstAmt) + Number(totalSgstAmt)}
                     </div>
                   ) : (
                     <div className="w-[93px] border-b border-gray-800">
-                      {totalCgstAmt + totalSgstAmt}
+                      {Number(totalCgstAmt) + Number(totalSgstAmt)}
                     </div>
                   )}
                 </div>

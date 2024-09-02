@@ -88,7 +88,7 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
   const selectProduct = form.watch("productDetails")
 
   const currCustomer = customers.find((customer) => customer.id === currCustomerId)
-  const isOutsideDelhiInvoice = (currCustomer?.state.toLowerCase() !== 'delhi') || false
+  const isOutsideDelhiInvoice = (!(['delhi'].includes(currCustomer?.state.toLowerCase().trim()))) || false
 
 
   useEffect(() => {
@@ -100,12 +100,12 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
   }, [selectProduct])
 
   useEffect(() => {
-    const totalTaxableValue = productPrices.reduce((acc, product) => acc + (product.taxableValue), 0);
-    const totalTaxGST = productPrices.reduce((acc, product) => acc + (product.cgstAmt + product.sgstAmt), 0);
-    const totalInvoiceValue = totalTaxableValue + totalTaxGST;
+    const totalTaxableValue = productPrices.reduce((acc, product) => acc + Number(product.taxableValue), 0);
+    const totalTaxGST = productPrices.reduce((acc, product) => acc + Number(Number(product.cgstAmt) + Number(product.sgstAmt)), 0);
+    const totalInvoiceValue = Number(totalTaxableValue + totalTaxGST).toFixed(2);
     form.setValue("totalTaxableValue", totalTaxableValue);
     form.setValue("totalTaxGST", totalTaxGST);
-    form.setValue("totalInvoiceValue", totalInvoiceValue);
+    form.setValue("totalInvoiceValue", Number(totalInvoiceValue));
   }, [productPrices])
 
   const handleProductInfoChange = (name: string, value: any, id: string, item: any) => {
@@ -120,7 +120,7 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
       const sgstAmt = (taxableValue * item.sgstRate) / 100;
       const productTotalValue = cgstAmt + sgstAmt + taxableValue;
 
-      return product.id === id ? { ...product, [name]: value, taxableValue, cgstAmt, sgstAmt, productTotalValue } : product
+      return product.id === id ? { ...product, [name]: value, taxableValue: taxableValue.toFixed(2), cgstAmt: cgstAmt.toFixed(2), sgstAmt: sgstAmt.toFixed(2), productTotalValue: productTotalValue.toFixed(2) } : product
     });
 
     const productExists = updatedProductInfos.some((product) => product.id === id);
@@ -402,11 +402,11 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
                 {isOutsideDelhiInvoice ? (<>
                   <div className="flex-1">
                     <Label>IGST Rate</Label>
-                    <Input disabled value={product.cgstRate + product.sgstRate} placeholder="cgstRate" />
+                    <Input disabled value={Number(product.cgstRate) + Number(product.sgstRate)} placeholder="cgstRate" />
                   </div>
                   <div className="flex-1">
                     <Label>IGST Amt</Label>
-                    <Input disabled value={product.cgstAmt + product.sgstAmt} placeholder="sgstAmt" />
+                    <Input disabled value={Number(product.cgstAmt) + Number(product.sgstAmt)} placeholder="sgstAmt" />
                   </div>
                 </>) : (<>
                   <div className="flex-1">
