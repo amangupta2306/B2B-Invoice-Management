@@ -103,8 +103,8 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
     const totalTaxableValue = productPrices.reduce((acc, product) => acc + Number(product.taxableValue), 0);
     const totalTaxGST = productPrices.reduce((acc, product) => acc + Number(Number(product.cgstAmt) + Number(product.sgstAmt)), 0);
     const totalInvoiceValue = Number(totalTaxableValue + totalTaxGST).toFixed(2);
-    form.setValue("totalTaxableValue", totalTaxableValue);
-    form.setValue("totalTaxGST", totalTaxGST);
+    form.setValue("totalTaxableValue", Number(totalTaxableValue.toFixed(2)));
+    form.setValue("totalTaxGST", Number(totalTaxGST.toFixed(2)));
     form.setValue("totalInvoiceValue", Number(totalInvoiceValue));
   }, [productPrices])
 
