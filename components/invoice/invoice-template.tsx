@@ -86,9 +86,9 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
         </header>
 
         <main>
-          <div className="border-[1px] border-gray-800 mx-12 font-semibold">
+          <div className="border border-black mx-12">
             <div className="flex">
-              <div className="w-[55%]">
+              <div className="w-[57%]">
                 <div className="border-r border-gray-800 px-1">
                   <p className="font-bold">MUKESH TRADERS</p>
                   <p className="w-52">
@@ -103,7 +103,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                   <p className="font-bold">
                     {invoiceInfo?.customer?.customerName}
                   </p>
-                  <p className="w-52">{invoiceInfo?.customer?.address}</p>
+                  <p className="w-72">{invoiceInfo?.customer?.address}</p>
                   <p>GSTIN/UIN : {invoiceInfo?.customer?.gstIn}</p>
                   <p>
                     State Name : {invoiceInfo?.customer?.state}, Code : 0
@@ -111,7 +111,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                   </p>
                 </div>
               </div>
-              <div className="w-[45%]">
+              <div className="w-[43%]">
                 <div className="grid grid-cols-2">
                   <span className="border-b border-r border-gray-800 px-1 h-[36px]">
                     <p>Invoice No.</p>
@@ -154,7 +154,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                 <div className="border-r border-gray-800 w-16">HSN/SAC</div>
                 <div className="border-r border-gray-800 w-20">Quantity</div>
                 <div className="border-r border-gray-800 w-20">Rate</div>
-                <div className="w-20">Amount</div>
+                <div className="w-28 pr-1">Amount</div>
               </div>
 
               <div>
@@ -173,7 +173,9 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                     <div className="border-r border-gray-800 w-20">
                       {item?.rate}
                     </div>
-                    <div className="w-20 text-end">{item?.taxableValue}</div>
+                    <div className="w-28 text-end pr-1">
+                      {item?.taxableValue}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -192,7 +194,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                     <div className="border-r border-gray-800 w-16">&nbsp;</div>
                     <div className="border-r border-gray-800 w-20">&nbsp;</div>
                     <div className="border-r border-gray-800 w-20">&nbsp;</div>
-                    <div className="w-20 text-end">{totalCgstAmt}</div>
+                    <div className="w-28 text-end pr-1">{totalCgstAmt}</div>
                   </div>
                   <div className=" w-full flex border-gray-800 items-center text-center">
                     <div className="border-r border-gray-800 w-10 ">&nbsp;</div>
@@ -202,7 +204,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                     <div className="border-r border-gray-800 w-16">&nbsp;</div>
                     <div className="border-r border-gray-800 w-20">&nbsp;</div>
                     <div className="border-r border-gray-800 w-20">&nbsp;</div>
-                    <div className="w-20 text-end">{totalSgstAmt}</div>
+                    <div className="w-28 text-end pr-1">{totalSgstAmt}</div>
                   </div>
                 </>
               ) : (
@@ -214,7 +216,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                   <div className="border-r border-gray-800 w-16">&nbsp;</div>
                   <div className="border-r border-gray-800 w-20">&nbsp;</div>
                   <div className="border-r border-gray-800 w-20">&nbsp;</div>
-                  <div className="w-20 text-end">
+                  <div className="w-28 text-end pr-1">
                     {Number(totalSgstAmt) + Number(totalCgstAmt)}
                   </div>
                 </div>
@@ -228,7 +230,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                 <div className="border-r border-gray-800 w-16">&nbsp;</div>
                 <div className="border-r border-gray-800 w-20">&nbsp;</div>
                 <div className="border-r border-gray-800 w-20">&nbsp;</div>
-                <div className="w-20 text-end font-bold">
+                <div className="w-28 text-end font-bold pr-1">
                   {formatCurrencyForIndia(invoiceInfo?.totalInvoiceValue)}
                 </div>
               </div>
@@ -347,19 +349,19 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                       <>
                         <div className="flex">
                           <div className="w-12 border-b border-r border-gray-800">
-                            {item?.product?.cgstRate}%
+                            {Number(item?.product?.cgstRate)}%
                           </div>
                           <div className="w-16 border-b border-r border-gray-800">
-                            {item?.cgstAmt}
+                            {Number(item?.cgstAmt)}
                           </div>
                         </div>
 
                         <div className="flex">
                           <div className="w-12 border-b border-r border-gray-800">
-                            {item?.product?.sgstRate}%
+                            {Number(item?.product?.sgstRate)}%
                           </div>
                           <div className="w-16 border-b border-r border-gray-800">
-                            {item?.sgstAmt}
+                            {Number(item?.sgstAmt)}
                           </div>
                         </div>
                       </>
@@ -385,7 +387,7 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
 
                 <div className="flex text-center font-bold">
                   <div className="w-20 border-b border-r border-gray-800">
-                    {invoiceInfo?.totalTaxableValue}
+                    {Number(invoiceInfo?.totalTaxableValue)}
                   </div>
                   {invoiceInfo.isOutsideDelhiInvoice ? (
                     <div className="flex">
@@ -400,19 +402,19 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
                     <>
                       <div className="flex">
                         <div className="w-12 border-b border-r border-gray-800">
-                          {totalCgstAmt}%
+                          {Number(totalCgstAmt)}%
                         </div>
                         <div className="w-16 border-b border-r border-gray-800">
-                          {totalCgstAmt}
+                          {Number(totalCgstAmt)}
                         </div>
                       </div>
 
                       <div className="flex">
                         <div className="w-12 border-b border-r border-gray-800">
-                          {totalSgstAmt}%
+                          {Number(totalSgstAmt)}%
                         </div>
                         <div className="w-16 border-b border-r border-gray-800">
-                          {totalSgstAmt}
+                          {Number(totalSgstAmt)}
                         </div>
                       </div>
                     </>
@@ -498,7 +500,7 @@ const UnfilledProductTable = () => {
       <div className="border-r border-gray-800 w-16">&nbsp;</div>
       <div className="border-r border-gray-800 w-20">&nbsp;</div>
       <div className="border-r border-gray-800 w-20">&nbsp;</div>
-      <div className=" w-20 "></div>
+      <div className="w-28 pr-1"></div>
     </div>
   );
 };

@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body { 
+html,
+body {
   height: 100%;
   width: 100%;
 }
@@ -69,6 +70,7 @@ html, body {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
