@@ -1,13 +1,13 @@
-"use client"
-import { useEffect, useState } from "react"
+"use client";
+import { useEffect, useState } from "react";
 
 import { format } from "date-fns";
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { CalendarIcon, CheckIcon, ChevronsUpDownIcon } from "lucide-react"
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { CalendarIcon, CheckIcon, ChevronsUpDownIcon } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -16,15 +16,22 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
-import { Input } from "@/components/ui/input"
-import { Calendar } from "@/components/ui/calendar"
+} from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { Input } from "@/components/ui/input";
+import { Calendar } from "@/components/ui/calendar";
 import { ScrollArea } from "../ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { Label } from "../ui/label";
@@ -35,7 +42,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 import { CreateInvoice } from "@/action/invoice";
 import { useRouter } from "next/navigation";
 
@@ -59,21 +66,38 @@ const formSchemaInvoice = z.object({
   totalInvoiceValue: z.number().min(1, "Total Invoice Value is required."),
   totalTaxGST: z.number().min(1, "Total Tax Value is required."),
   totalTaxableValue: z.number().min(1, "Total Taxable Value is required."),
-})
+});
 
-export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers: any[], products: any[], lastInvoiceNo: string | null }) => {
-
-  const productsOpt = products?.map(product => ({ label: product.productName, value: product.id, ...product }))
-  const [productPrices, setProductPrices] = useState<any[]>([])
+export const InvoiceForm = ({
+  customers,
+  products,
+  lastInvoiceNo,
+  lastInvoiceDate,
+}: {
+  customers: any[];
+  products: any[];
+  lastInvoiceNo: string | null;
+  lastInvoiceDate: Date | null;
+}) => {
+  const productsOpt = products?.map((product) => ({
+    label: product.productName,
+    value: product.id,
+    ...product,
+  }));
+  const [productPrices, setProductPrices] = useState<any[]>([]);
 
   const currDate = new Date();
-  const lastMonth = new Date(currDate.setMonth(currDate.getMonth() - 1)).toLocaleString("en-US", { month: 'long' });
+  const lastMonth = new Date(
+    currDate.setMonth(currDate.getMonth() - 1)
+  ).toLocaleString("en-US", { month: "long" });
 
   const form = useForm({
     resolver: zodResolver(formSchemaInvoice),
     defaultValues: {
-      invoiceNo: (((lastInvoiceNo ? Number(lastInvoiceNo) : 1000) + 1) || 0).toString(),
-      invoiceDate: new Date(),
+      invoiceNo: (
+        (lastInvoiceNo ? Number(lastInvoiceNo) : 1000) + 1 || 0
+      ).toString(),
+      invoiceDate: lastInvoiceDate ? lastInvoiceDate : new Date(),
       monthOf: lastMonth,
       yearOf: currDate.getFullYear().toString(),
       customerId: "",
@@ -82,33 +106,50 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
       totalTaxGST: 0,
       totalTaxableValue: 0,
     },
-  })
+  });
 
-  const currCustomerId = form.watch("customerId")
-  const selectProduct = form.watch("productDetails")
+  const currCustomerId = form.watch("customerId");
+  const selectProduct = form.watch("productDetails");
 
-  const currCustomer = customers.find((customer) => customer.id === currCustomerId)
-  const isOutsideDelhiInvoice = (!(['delhi'].includes(currCustomer?.state.toLowerCase().trim()))) || false
-
+  const currCustomer = customers.find(
+    (customer) => customer.id === currCustomerId
+  );
+  const isOutsideDelhiInvoice =
+    !["delhi"].includes(currCustomer?.state.toLowerCase().trim()) || false;
 
   useEffect(() => {
     const newSelecctedProducts = selectProduct.map((product: any) => {
       const productInfo = productPrices.find((p) => p.id === product.value);
       return productInfo ? { ...product, ...productInfo } : product;
-    })
-    setProductPrices(newSelecctedProducts)
-  }, [selectProduct])
+    });
+    setProductPrices(newSelecctedProducts);
+  }, [selectProduct]);
 
   useEffect(() => {
-    const totalTaxableValue = productPrices.reduce((acc, product) => acc + Number(product.taxableValue), 0);
-    const totalTaxGST = productPrices.reduce((acc, product) => acc + Number(Number(product.cgstAmt) + Number(product.sgstAmt)), 0);
-    const totalInvoiceValue = Number(totalTaxableValue + totalTaxGST).toFixed(2);
+    const totalTaxableValue = productPrices.reduce(
+      (acc, product) => acc + Number(product.taxableValue),
+      0
+    );
+    const totalTaxGST = productPrices.reduce(
+      (acc, product) =>
+        acc + Number(Number(product.cgstAmt) + Number(product.sgstAmt)),
+      0
+    );
+    const totalInvoiceValue = Number(totalTaxableValue + totalTaxGST).toFixed(
+      2
+    );
     form.setValue("totalTaxableValue", Number(totalTaxableValue.toFixed(2)));
     form.setValue("totalTaxGST", Number(totalTaxGST.toFixed(2)));
+    form.setValue("totalTaxGST", Number(totalTaxGST.toFixed(2)));
     form.setValue("totalInvoiceValue", Number(totalInvoiceValue));
-  }, [productPrices])
+  }, [productPrices]);
 
-  const handleProductInfoChange = (name: string, value: any, id: string, item: any) => {
+  const handleProductInfoChange = (
+    name: string,
+    value: any,
+    id: string,
+    item: any
+  ) => {
     const updatedProductInfos = productPrices.map((product) => {
       let taxableValue = 0;
       if (name === "rate") {
@@ -120,10 +161,21 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
       const sgstAmt = (taxableValue * item.sgstRate) / 100;
       const productTotalValue = cgstAmt + sgstAmt + taxableValue;
 
-      return product.id === id ? { ...product, [name]: value, taxableValue: taxableValue.toFixed(2), cgstAmt: cgstAmt.toFixed(2), sgstAmt: sgstAmt.toFixed(2), productTotalValue: productTotalValue.toFixed(2) } : product
+      return product.id === id
+        ? {
+            ...product,
+            [name]: value,
+            taxableValue: taxableValue.toFixed(2),
+            cgstAmt: cgstAmt.toFixed(2),
+            sgstAmt: sgstAmt.toFixed(2),
+            productTotalValue: productTotalValue.toFixed(2),
+          }
+        : product;
     });
 
-    const productExists = updatedProductInfos.some((product) => product.id === id);
+    const productExists = updatedProductInfos.some(
+      (product) => product.id === id
+    );
 
     if (!productExists) {
       setProductPrices([...productPrices, { id, [name]: value }]);
@@ -134,23 +186,24 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
 
   const onSubmit = async (values: z.infer<typeof formSchemaInvoice>) => {
     try {
-      const isSuccess = await CreateInvoice({ values, isOutsideDelhiInvoice, productPrices })
-      console.log(isSuccess, 'isSuccess')
+      const isSuccess = await CreateInvoice({
+        values,
+        isOutsideDelhiInvoice,
+        productPrices,
+      });
       if (isSuccess) {
-        location.reload()
-        form.reset()
+        location.reload();
+        form.reset();
       }
-
     } catch (error) {
-      console.log(error, 'Error in creating invoice')
+      console.log(error, "Error in creating invoice");
     }
-  }
-
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <div className="lg:flex gap-5 w-full justify-center items-center">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-2">
+        <div className="lg:flex gap-5 w-full justify-center items-center lg:space-y-0 space-y-4">
           <FormField
             control={form.control}
             name="invoiceNo"
@@ -172,7 +225,10 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
               <FormItem className="flex-1">
                 <FormLabel>Select Month</FormLabel>
                 <FormControl>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
                     <SelectTrigger id="month">
                       <SelectValue placeholder="Month" />
                     </SelectTrigger>
@@ -204,13 +260,19 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
               <FormItem className="flex-1">
                 <FormLabel>Select Year</FormLabel>
                 <FormControl>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
                     <SelectTrigger id="year">
                       <SelectValue placeholder="Year" />
                     </SelectTrigger>
                     <SelectContent>
                       {Array.from({ length: 10 }, (_, i) => (
-                        <SelectItem key={i} value={`${new Date().getFullYear() + i}`}>
+                        <SelectItem
+                          key={i}
+                          value={`${new Date().getFullYear() + i}`}
+                        >
                           {new Date().getFullYear() - i}
                         </SelectItem>
                       ))}
@@ -221,7 +283,6 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
               </FormItem>
             )}
           />
-
 
           <FormField
             control={form.control}
@@ -280,7 +341,8 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
                         !field.value && "text-muted-foreground"
                       )}
                     >
-                      {currCustomer ? (`${currCustomer?.customerName}`)
+                      {currCustomer
+                        ? `${currCustomer?.customerName}`
                         : "Select Customer"}
                       <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
@@ -290,7 +352,7 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
                   <Command className="max-w-screen-2xl">
                     <CommandInput placeholder="Search Customer..." />
                     <CommandList>
-                      <ScrollArea className="h-[300px] w-full rounded-md border pr-3">
+                      <ScrollArea className="h-48 lg:h-[300px] w-80 lg:w-full rounded-md border pr-3">
                         <CommandEmpty>No Customer found.</CommandEmpty>
                         <CommandGroup>
                           {customers?.map((customer) => (
@@ -298,7 +360,7 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
                               value={`${customer?.customerName} - ${customer?.address}`}
                               key={customer.id}
                               onSelect={() => {
-                                form.setValue("customerId", customer.id)
+                                form.setValue("customerId", customer.id);
                               }}
                             >
                               <CheckIcon
@@ -325,20 +387,40 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
 
         <div>
           <Label htmlFor="customerAddress">Address</Label>
-          <Input id="customerAddress" disabled value={currCustomer?.address || ""} placeholder="address" />
+          <Input
+            id="customerAddress"
+            disabled
+            value={currCustomer?.address || ""}
+            placeholder="address"
+          />
         </div>
         <div className="flex gap-5 w-full">
           <div className="flex-1">
             <Label htmlFor="customerGST">GST</Label>
-            <Input id="customerGST" value={currCustomer?.gstIn || ""} disabled placeholder="GST" />
+            <Input
+              id="customerGST"
+              value={currCustomer?.gstIn || ""}
+              disabled
+              placeholder="GST"
+            />
           </div>
           <div className="flex-1">
             <Label htmlFor="customerState">State</Label>
-            <Input id="customerState" value={currCustomer?.state || ""} disabled placeholder="State" />
+            <Input
+              id="customerState"
+              value={currCustomer?.state || ""}
+              disabled
+              placeholder="State"
+            />
           </div>
           <div className="flex-1">
             <Label htmlFor="customerStateCode">State Code</Label>
-            <Input id="customerStateCode" value={currCustomer?.stateCode || ""} disabled placeholder="State Code" />
+            <Input
+              id="customerStateCode"
+              value={currCustomer?.stateCode || ""}
+              disabled
+              placeholder="State Code"
+            />
           </div>
         </div>
 
@@ -349,13 +431,13 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Select Products</FormLabel>
-                <FormControl >
+                <FormControl>
                   <MultipleSelector
                     {...field}
                     // onChange={(value) => setProductPrices(value)}
                     defaultOptions={productsOpt || []}
                     commandProps={{
-                      className: "border"
+                      className: "border",
                     }}
                     placeholder="Select Products..."
                   />
@@ -368,11 +450,18 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
 
         {productPrices?.map((product: any, index: number) => {
           return (
-            <div key={product.id} className="mt-3 lg:flex gap-5 ">
+            <div
+              key={product.id}
+              className="mt-3 lg:flex gap-5 lg:space-y-0 space-y-2"
+            >
               <div className="grid grid-cols-2 lg:flex gap-3">
                 <div className="col-span-2 lg:flex-1">
                   <Label>Product Name</Label>
-                  <Input disabled value={product.label} placeholder="Product Name" />
+                  <Input
+                    disabled
+                    value={product.label}
+                    placeholder="Product Name"
+                  />
                 </div>
                 <div className="flex-1">
                   <Label>Qty</Label>
@@ -380,7 +469,14 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
                     type="number"
                     value={product.qty}
                     // name, value, id, item
-                    onChange={(e) => handleProductInfoChange('qty', e.target.value, product.id, product)}
+                    onChange={(e) =>
+                      handleProductInfoChange(
+                        "qty",
+                        e.target.value,
+                        product.id,
+                        product
+                      )
+                    }
                     placeholder="Quantity"
                   />
                 </div>
@@ -389,7 +485,14 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
                   <Input
                     type="number"
                     value={product.rate}
-                    onChange={(e) => handleProductInfoChange('rate', e.target.value, product.id, product)}
+                    onChange={(e) =>
+                      handleProductInfoChange(
+                        "rate",
+                        e.target.value,
+                        product.id,
+                        product
+                      )
+                    }
                     placeholder="Rate"
                   />
                 </div>
@@ -397,40 +500,80 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
               <div className="grid grid-cols-2 lg:flex gap-3">
                 <div className="col-span-2 lg:flex-1">
                   <Label>Taxable Value</Label>
-                  <Input disabled value={product.taxableValue} placeholder="Taxable Value" />
+                  <Input
+                    disabled
+                    value={product.taxableValue}
+                    placeholder="Taxable Value"
+                  />
                 </div>
-                {isOutsideDelhiInvoice ? (<>
-                  <div className="flex-1">
-                    <Label>IGST Rate</Label>
-                    <Input disabled value={Number(product.cgstRate) + Number(product.sgstRate)} placeholder="cgstRate" />
-                  </div>
-                  <div className="flex-1">
-                    <Label>IGST Amt</Label>
-                    <Input disabled value={Number(product.cgstAmt) + Number(product.sgstAmt)} placeholder="sgstAmt" />
-                  </div>
-                </>) : (<>
-                  <div className="flex-1">
-                    <Label>Cgst Rate</Label>
-                    <Input disabled value={product.cgstRate} placeholder="cgstRate" />
-                  </div>
-                  <div className="flex-1">
-                    <Label>Sgst Rate</Label>
-                    <Input disabled value={product.sgstRate} placeholder="sgstRate" />
-                  </div>
-                  <div className="flex-1">
-                    <Label>Cgst Amt</Label>
-                    <Input disabled value={product.cgstAmt} placeholder="cgstAmt" />
-                  </div>
-                  <div className="flex-1">
-                    <Label>Sgst Amt</Label>
-                    <Input disabled value={product.sgstAmt} placeholder="sgstAmt" />
-                  </div>
-                </>)}
+                {isOutsideDelhiInvoice ? (
+                  <>
+                    <div className="flex-1">
+                      <Label>IGST Rate</Label>
+                      <Input
+                        disabled
+                        value={
+                          Number(product.cgstRate) + Number(product.sgstRate)
+                        }
+                        placeholder="cgstRate"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <Label>IGST Amt</Label>
+                      <Input
+                        disabled
+                        value={
+                          Number(product.cgstAmt) + Number(product.sgstAmt)
+                        }
+                        placeholder="sgstAmt"
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex-1">
+                      <Label>Cgst Rate</Label>
+                      <Input
+                        disabled
+                        value={product.cgstRate}
+                        placeholder="cgstRate"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <Label>Sgst Rate</Label>
+                      <Input
+                        disabled
+                        value={product.sgstRate}
+                        placeholder="sgstRate"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <Label>Cgst Amt</Label>
+                      <Input
+                        disabled
+                        value={product.cgstAmt}
+                        placeholder="cgstAmt"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <Label>Sgst Amt</Label>
+                      <Input
+                        disabled
+                        value={product.sgstAmt}
+                        placeholder="sgstAmt"
+                      />
+                    </div>
+                  </>
+                )}
               </div>
               <div className=" lg:flex">
                 <div className="flex-1">
                   <Label>Product Total Value</Label>
-                  <Input disabled value={product.productTotalValue} placeholder="productTotalValue" />
+                  <Input
+                    disabled
+                    value={product.productTotalValue}
+                    placeholder="productTotalValue"
+                  />
                 </div>
               </div>
             </div>
@@ -478,8 +621,8 @@ export const InvoiceForm = ({ customers, products, lastInvoiceNo }: { customers:
             </FormItem>
           )}
         />
-        < Button type="submit" > Create Invoice</Button >
-      </form >
-    </Form >
-  )
-}
+        <Button type="submit"> Create Invoice</Button>
+      </form>
+    </Form>
+  );
+};

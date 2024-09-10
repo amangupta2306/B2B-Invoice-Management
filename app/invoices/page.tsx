@@ -9,7 +9,10 @@ export default async function InvoicesPage() {
         include: {
           product: true,
         },
-      }
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
     },
   });
 
@@ -17,7 +20,12 @@ export default async function InvoicesPage() {
     ...invoice,
     customerName: invoice.customer.customerName,
     address: invoice.customer.address,
-    product: `${invoice.pricedProducts.map((product) => `${product.product.productName}: Qty: ${product.qty}, Rate: ${product.rate}`).join(", ")}`,
+    product: `${invoice.pricedProducts
+      .map(
+        (product) =>
+          `${product.product.productName}: Qty: ${product.qty}, Rate: ${product.rate}`
+      )
+      .join(", ")}`,
   }));
   return <InvoiceTable invoices={invoices} />;
 }

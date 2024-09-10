@@ -8,12 +8,12 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Customer } from "@prisma/client";
 import { handleDeleteCustomer, handleEditCustomer } from "./functionality";
+import { DeleteCustomer } from "@/action/customer";
 
 export const columns: ColumnDef<Customer>[] = [
   {
@@ -96,12 +96,11 @@ export const columns: ColumnDef<Customer>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => handleDeleteCustomer(id)}>
+            {/* <DropdownMenuItem onClick={() => handleEditCustomer(id)}>
               Edit Customer
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => handleDeleteCustomer(id)}>
+            <DropdownMenuItem onClick={async () => await DeleteCustomer(id)}>
               Delete Customer
             </DropdownMenuItem>
           </DropdownMenuContent>

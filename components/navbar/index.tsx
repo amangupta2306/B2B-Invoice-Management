@@ -21,14 +21,14 @@ export const Navbar = () => {
             }
         };
 
-        handleResize(); // Set initial state
+        handleResize();
         window.addEventListener('resize', handleResize);
 
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
     return (
-        <div className="relative">
+        <div className="relative z-10">
             <div className="fixed w-screen flex py-2 lg:pl-2 border-b lg:space-x-4">
                 <div className={cn(
                     isCollapsed ? "" : "w-80"
@@ -54,9 +54,9 @@ export const Navbar = () => {
                     />
                 </div>
             </div>
-            <aside className={cn("fixed left-0 top-14 lg:p-2 border border-l-0 h-screen "
+            <aside className={cn("fixed bottom-0 lg:left-0 lg:top-14 lg:p-2 border border-l-0 w-screen lg:h-screen"
                 + "transition-all duration-200 ease-in-out bg-background border-r",
-                isCollapsed ? "w-[3.1rem]" : "w-72"
+                isCollapsed ? "w-full" : "w-72"
             )}>
 
                 <NavbarItems isCollapsed={isCollapsed} />

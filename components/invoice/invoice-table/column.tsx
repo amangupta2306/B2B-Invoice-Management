@@ -82,9 +82,7 @@ export const columns: ColumnDef<Invoice>[] = [
     header: "Address",
     accessorKey: "address",
     cell: ({ row }) => (
-      <HoverCardToolTip side="top" label="Address" align="center" className="min-w-max">
-        <div className="capitalize">{row.getValue("address")}</div>
-      </HoverCardToolTip>
+      <div className="capitalize">{row.getValue("address")}</div>
     ),
   },
   {

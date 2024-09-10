@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -20,9 +19,9 @@ export const Invoice = async () => {
   });
 
   return (
-    <div className="p-2 lg:p-4">
+    <div className="lg:p-4">
       <Card>
-        <CardHeader className="px-3 lg:px-6">
+        <CardHeader className="px-5 lg:px-6">
           <CardTitle>Create Invoice</CardTitle>
           <CardDescription>Invoice </CardDescription>
         </CardHeader>
@@ -31,6 +30,7 @@ export const Invoice = async () => {
             customers={customers || []}
             products={products || []}
             lastInvoiceNo={invoices?.invoiceNo || null}
+            lastInvoiceDate={invoices?.invoiceDate || null}
           />
         </CardContent>
       </Card>
