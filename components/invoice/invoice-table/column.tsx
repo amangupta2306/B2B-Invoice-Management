@@ -137,20 +137,18 @@ export const columns: ColumnDef<Invoice>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(id)}
-            >
-              Edit Invoice
-            </DropdownMenuItem>
+            <Link href={`/invoices/${id}/edit`}>
+              <DropdownMenuItem>
+                Edit Invoice
+              </DropdownMenuItem>
+            </Link>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link href={`/invoices/${id}`}>
-                Print Invoice
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <PrintInvoive invoiceId={id} />
-            </DropdownMenuItem>
+            <Link href={`/invoices/${id}`}>
+              <DropdownMenuItem>
+                Preview Invoice
+              </DropdownMenuItem>
+            </Link>
+            <PrintInvoive invoiceId={id} />
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -167,8 +165,8 @@ export const PrintInvoive = ({ invoiceId }: { invoiceId: string }) => {
   };
 
   return (
-    <DropdownMenuItem>
-      <button onClick={handlePrint} className="bg-customColor-100 text-customColor-50 rounded-md p-2">Print Invoice</button>
+    <DropdownMenuItem onClick={handlePrint}>
+      Print & Preview Invoice
     </DropdownMenuItem>
   );
 };

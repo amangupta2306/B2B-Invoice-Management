@@ -43,8 +43,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CreateInvoice } from "@/action/invoice";
-import { useRouter } from "next/navigation";
+import { CreateInvoice, UpdateInvoice } from "@/action/invoice";
+import { useParams } from "next/navigation";
 
 const formSchemaInvoice = z.object({
   invoiceNo: z.string().min(1, "Invoice number is required."),
@@ -88,8 +88,8 @@ export const InvoiceForm = ({
     value: product.id,
     ...product,
   }));
-  console.log(productsOpt, "productsOpt");  
   const [productPrices, setProductPrices] = useState<any[]>([]);
+  const params = useParams()
 
   const currDate = new Date();
   const lastMonth = new Date(
@@ -189,7 +189,12 @@ export const InvoiceForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchemaInvoice>) => {
     try {
-      const isSuccess = await CreateInvoice({
+      const isSuccess = isEdit ? await UpdateInvoice({
+        id: params.id,
+        values,
+        isOutsideDelhiInvoice,
+        productPrices,
+      }) : await CreateInvoice({
         values,
         isOutsideDelhiInvoice,
         productPrices,
@@ -210,7 +215,7 @@ export const InvoiceForm = ({
       form.setValue("monthOf", invoiceInfo?.monthOf);
       form.setValue("yearOf", invoiceInfo?.yearOf);
       form.setValue("customerId", invoiceInfo?.customerId);
-      form.setValue("productDetails", invoiceInfo?.pricedProducts);
+      // form.setValue("productDetails", invoiceInfo?.pricedProducts);  it need to be fixed
     }
   }, [isEdit]);
 
@@ -635,7 +640,7 @@ export const InvoiceForm = ({
             </FormItem>
           )}
         />
-        <Button type="submit"> Create Invoice</Button>
+        <Button type="submit"> {isEdit ? "Update Invoice" : "Create Invoice"}</Button>
       </form>
     </Form>
   );
