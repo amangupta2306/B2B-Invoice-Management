@@ -18,6 +18,7 @@ export const Invoice = async () => {
     },
   });
 
+
   return (
     <div className="lg:p-4">
       <Card>
@@ -27,10 +28,11 @@ export const Invoice = async () => {
         </CardHeader>
         <CardContent className="px-3 lg:px-6">
           <InvoiceForm
+            isEdit={false}
             customers={customers || []}
             products={products || []}
-            lastInvoiceNo={invoices?.invoiceNo || null}
-            lastInvoiceDate={invoices?.invoiceDate || null}
+            lastInvoiceNo={invoices?.invoiceNo || ""}
+            lastInvoiceDate={invoices?.invoiceDate || new Date()}
           />
         </CardContent>
       </Card>

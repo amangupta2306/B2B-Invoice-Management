@@ -69,21 +69,26 @@ const formSchemaInvoice = z.object({
 });
 
 export const InvoiceForm = ({
+  isEdit,
+  invoiceInfo,
   customers,
   products,
   lastInvoiceNo,
   lastInvoiceDate,
 }: {
+  isEdit: boolean
+  invoiceInfo?: any;
   customers: any[];
   products: any[];
-  lastInvoiceNo: string | null;
-  lastInvoiceDate: Date | null;
+  lastInvoiceNo: string;
+  lastInvoiceDate: Date;
 }) => {
   const productsOpt = products?.map((product) => ({
     label: product.productName,
     value: product.id,
     ...product,
   }));
+  console.log(productsOpt, "productsOpt");  
   const [productPrices, setProductPrices] = useState<any[]>([]);
 
   const currDate = new Date();
@@ -94,10 +99,8 @@ export const InvoiceForm = ({
   const form = useForm({
     resolver: zodResolver(formSchemaInvoice),
     defaultValues: {
-      invoiceNo: (
-        (lastInvoiceNo ? Number(lastInvoiceNo) : 1000) + 1 || 0
-      ).toString(),
-      invoiceDate: lastInvoiceDate ? lastInvoiceDate : new Date(),
+      invoiceNo: isEdit ? lastInvoiceNo : (lastInvoiceNo ? Number(lastInvoiceNo) + 1 : 1000).toString(),
+      invoiceDate: isEdit ? lastInvoiceDate : new Date(),
       monthOf: lastMonth,
       yearOf: currDate.getFullYear().toString(),
       customerId: "",
@@ -163,13 +166,13 @@ export const InvoiceForm = ({
 
       return product.id === id
         ? {
-            ...product,
-            [name]: value,
-            taxableValue: taxableValue.toFixed(2),
-            cgstAmt: cgstAmt.toFixed(2),
-            sgstAmt: sgstAmt.toFixed(2),
-            productTotalValue: productTotalValue.toFixed(2),
-          }
+          ...product,
+          [name]: value,
+          taxableValue: taxableValue.toFixed(2),
+          cgstAmt: cgstAmt.toFixed(2),
+          sgstAmt: sgstAmt.toFixed(2),
+          productTotalValue: productTotalValue.toFixed(2),
+        }
         : product;
     });
 
@@ -200,6 +203,17 @@ export const InvoiceForm = ({
     }
   };
 
+  useEffect(() => {
+    if (isEdit) {
+      form.setValue("invoiceNo", invoiceInfo?.invoiceNo);
+      form.setValue("invoiceDate", invoiceInfo?.invoiceDate);
+      form.setValue("monthOf", invoiceInfo?.monthOf);
+      form.setValue("yearOf", invoiceInfo?.yearOf);
+      form.setValue("customerId", invoiceInfo?.customerId);
+      form.setValue("productDetails", invoiceInfo?.pricedProducts);
+    }
+  }, [isEdit]);
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-2">
@@ -211,7 +225,7 @@ export const InvoiceForm = ({
               <FormItem className="flex-1">
                 <FormLabel>Invoice Number</FormLabel>
                 <FormControl>
-                  <Input disabled placeholder="Invoice Number" {...field} />
+                  <Input disabled placeholder="Invoice Number" {...field} value={field.value ?? ''} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
