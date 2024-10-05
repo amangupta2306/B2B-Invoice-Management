@@ -48,8 +48,18 @@ export function CustomerForm() {
   });
 
   async function onSubmit(data: z.infer<typeof FormSchemaCustomer>) {
-    await CreateCustomer({ values: data });
-    form.reset();
+    try {
+      await CreateCustomer({ values: data });
+      toast({
+        description: "Customer created successfully!",
+      });
+      form.reset();
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        description: "Failed to create Customer.",
+      });
+    }
   }
 
   return (

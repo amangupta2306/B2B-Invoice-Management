@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -45,6 +44,7 @@ import {
 } from "@/components/ui/select";
 import { CreateInvoice, UpdateInvoice } from "@/action/invoice";
 import { useParams } from "next/navigation";
+import { toast } from "../ui/use-toast";
 
 const formSchemaInvoice = z.object({
   invoiceNo: z.string().min(1, "Invoice number is required."),
@@ -76,7 +76,7 @@ export const InvoiceForm = ({
   lastInvoiceNo,
   lastInvoiceDate,
 }: {
-  isEdit: boolean
+  isEdit: boolean;
   invoiceInfo?: any;
   customers: any[];
   products: any[];
@@ -89,7 +89,10 @@ export const InvoiceForm = ({
     ...product,
   }));
   const [productPrices, setProductPrices] = useState<any[]>([]);
-  const params = useParams()
+
+  const [popoverOpen, setPopoverOpen] = useState(false);
+
+  const params = useParams();
 
   const currDate = new Date();
   const lastMonth = new Date(
@@ -99,7 +102,9 @@ export const InvoiceForm = ({
   const form = useForm({
     resolver: zodResolver(formSchemaInvoice),
     defaultValues: {
-      invoiceNo: isEdit ? lastInvoiceNo : (lastInvoiceNo ? Number(lastInvoiceNo) + 1 : 1000).toString(),
+      invoiceNo: isEdit
+        ? lastInvoiceNo
+        : (lastInvoiceNo ? Number(lastInvoiceNo) + 1 : 1000).toString(),
       invoiceDate: isEdit ? lastInvoiceDate : new Date(),
       monthOf: lastMonth,
       yearOf: currDate.getFullYear().toString(),
@@ -166,13 +171,13 @@ export const InvoiceForm = ({
 
       return product.id === id
         ? {
-          ...product,
-          [name]: value,
-          taxableValue: taxableValue.toFixed(2),
-          cgstAmt: cgstAmt.toFixed(2),
-          sgstAmt: sgstAmt.toFixed(2),
-          productTotalValue: productTotalValue.toFixed(2),
-        }
+            ...product,
+            [name]: value,
+            taxableValue: taxableValue.toFixed(2),
+            cgstAmt: cgstAmt.toFixed(2),
+            sgstAmt: sgstAmt.toFixed(2),
+            productTotalValue: productTotalValue.toFixed(2),
+          }
         : product;
     });
 
@@ -189,21 +194,29 @@ export const InvoiceForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchemaInvoice>) => {
     try {
-      const isSuccess = isEdit ? await UpdateInvoice({
-        id: params.id,
-        values,
-        isOutsideDelhiInvoice,
-        productPrices,
-      }) : await CreateInvoice({
-        values,
-        isOutsideDelhiInvoice,
-        productPrices,
-      });
+      const isSuccess = isEdit
+        ? await UpdateInvoice({
+            id: params.id,
+            values,
+            isOutsideDelhiInvoice,
+            productPrices,
+          })
+        : await CreateInvoice({
+            values,
+            isOutsideDelhiInvoice,
+            productPrices,
+          });
       if (isSuccess) {
+        toast({
+          description: "Invoice created successfully!",
+        });
         location.reload();
         form.reset();
       }
     } catch (error) {
+      toast({
+        description: "Failed to  create Invoice.",
+      });
       console.log(error, "Error in creating invoice");
     }
   };
@@ -221,8 +234,11 @@ export const InvoiceForm = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-2">
-        <div className="lg:flex gap-5 w-full justify-center items-center lg:space-y-0 space-y-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="lg:space-y-4 px-2 space-y-8"
+      >
+        <div className="lg:flex gap-5 w-full justify-center items-center lg:space-y-0 space-y-8">
           <FormField
             control={form.control}
             name="invoiceNo"
@@ -230,7 +246,12 @@ export const InvoiceForm = ({
               <FormItem className="flex-1">
                 <FormLabel>Invoice Number</FormLabel>
                 <FormControl>
-                  <Input disabled placeholder="Invoice Number" {...field} value={field.value ?? ''} />
+                  <Input
+                    disabled
+                    placeholder="Invoice Number"
+                    {...field}
+                    value={field.value ?? ""}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -349,7 +370,7 @@ export const InvoiceForm = ({
           render={({ field }) => (
             <FormItem className="flex flex-col w-full">
               <FormLabel>Customer</FormLabel>
-              <Popover>
+              <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
@@ -359,6 +380,7 @@ export const InvoiceForm = ({
                         "w-full max-w-screen-2xl overflow-ellipsis overflow-clip justify-between",
                         !field.value && "text-muted-foreground"
                       )}
+                      onClick={() => setPopoverOpen(!popoverOpen)}
                     >
                       {currCustomer
                         ? `${currCustomer?.customerName}`
@@ -380,6 +402,7 @@ export const InvoiceForm = ({
                               key={customer.id}
                               onSelect={() => {
                                 form.setValue("customerId", customer.id);
+                                setPopoverOpen(false); // Close the popover after selection
                               }}
                             >
                               <CheckIcon
@@ -640,7 +663,10 @@ export const InvoiceForm = ({
             </FormItem>
           )}
         />
-        <Button type="submit"> {isEdit ? "Update Invoice" : "Create Invoice"}</Button>
+        <Button type="submit">
+          {" "}
+          {isEdit ? "Update Invoice" : "Create Invoice"}
+        </Button>
       </form>
     </Form>
   );

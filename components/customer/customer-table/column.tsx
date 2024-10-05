@@ -12,8 +12,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Customer } from "@prisma/client";
-import { handleDeleteCustomer, handleEditCustomer } from "./functionality";
 import { DeleteCustomer } from "@/action/customer";
+import { toast } from "@/components/ui/use-toast";
 
 export const columns: ColumnDef<Customer>[] = [
   {
@@ -100,7 +100,20 @@ export const columns: ColumnDef<Customer>[] = [
               Edit Customer
             </DropdownMenuItem> */}
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={async () => await DeleteCustomer(id)}>
+            <DropdownMenuItem 
+              onClick={async () => {
+                try {
+                  await DeleteCustomer(id);
+                  toast({
+                    description: "Customer Deleted Successfully!",
+                  });
+                } catch (error) {
+                  toast({
+                    description: "Failed to Delete Customer.",
+                  }); 
+                }
+              }}
+            >
               Delete Customer
             </DropdownMenuItem>
           </DropdownMenuContent>

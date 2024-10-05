@@ -12,6 +12,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Product } from "@prisma/client";
+import { DeleteProduct } from "@/action/product";
+import { toast } from "@/components/ui/use-toast";
 
 export const columns: ColumnDef<Product>[] = [
   {
@@ -79,13 +81,26 @@ export const columns: ColumnDef<Product>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(id)}
-            >
+            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(id)}>
               Edit Product
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Delete Customer</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={async () => {
+                try {
+                  await DeleteProduct(id);
+                  toast({
+                    description: "Product Deleted Successfully!",
+                  });
+                } catch (error) {
+                  toast({
+                    description: "Failed to Delete Product.",
+                  }); 
+                }
+              }}
+            >
+              Delete Product
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

@@ -14,8 +14,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/use-toast";
 import { CreateProduct } from "@/action/product";
+import { toast } from "../ui/use-toast";
 
 const FormSchemaProduct = z.object({
   productName: z.string().min(2, {
@@ -25,7 +25,7 @@ const FormSchemaProduct = z.object({
     message: "Address must be at least 2 characters.",
   }),
   cgstRate: z.string(),
-  sgstRate: z.string()
+  sgstRate: z.string(),
 });
 
 export function ProductForm() {
@@ -40,8 +40,18 @@ export function ProductForm() {
   });
 
   async function onSubmit(data: z.infer<typeof FormSchemaProduct>) {
-    await CreateProduct({ values: data });
-    form.reset();
+    try {
+      await CreateProduct({ values: data });
+      toast({
+        description: "Product created Successfully!",
+      });
+      form.reset();
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        description: "Failed to create Product.",
+      });
+    }
   }
 
   return (
@@ -54,7 +64,11 @@ export function ProductForm() {
             <FormItem>
               <FormLabel>Product Name</FormLabel>
               <FormControl>
-                <Input className="uppercase" placeholder="Product Name" {...field} />
+                <Input
+                  className="uppercase"
+                  placeholder="Product Name"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
