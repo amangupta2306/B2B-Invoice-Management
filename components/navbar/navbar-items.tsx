@@ -42,11 +42,11 @@ export function NavbarItems({ links = LINKS, isCollapsed = false }: NavProps) {
                                     buttonVariants({ variant: link.variant, size: "icon" }),
                                     "h-9 w-9",
                                     link.variant === "default" &&
-                                    "dark:bg-muted dark:text-muted-foreground dark:hover:bg-primary dark:hover:text-white",
+                                    "dark:lg:bg-muted dark:bg-transparent dark:text-muted-foreground/75 dark:lg:hover:bg-primary dark:hover:text-white",
                                     pathname === link.href ? "bg-primary text-white" : ""
                                 )}
                             >
-                                <link.icon className="h-4 w-4" />
+                                <link.icon className="h-5 w-5" />
                                 <span className="sr-only">{link.title}</span>
                             </Link>
                         </ActionTooltip>
@@ -57,7 +57,7 @@ export function NavbarItems({ links = LINKS, isCollapsed = false }: NavProps) {
                             className={cn(
                                 buttonVariants({ variant: link.variant, size: "sm" }),
                                 link.variant === "default" &&
-                                "dark:bg-muted dark:text-white dark:hover:bg-primary dark:hover:text-white",
+                                "dark:bg-muted dark:text-white dark:lg:hover:bg-primary dark:hover:text-white",
                                 "justify-start",
                                 pathname === link.href ? "dark:bg-primary text-white" : ""
                             )}

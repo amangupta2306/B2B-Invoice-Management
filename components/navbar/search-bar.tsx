@@ -66,11 +66,11 @@ export function SearchBar({
     <>
       <button
         onClick={() => setOpen(true)}
-        className="group border-none px-2 py-2 rounded-full bg-zinc-100 flex items-center gap-x-2 w-full hover:bg-zinc-100/95 dark:bg-zinc-800  dark:hover:bg-zinc-700 transition"
+        className="group border-none lg:p-2 p-1 rounded-full lg:bg-zinc-100 flex items-center gap-x-2 lg:w-full lg:hover:bg-zinc-100/95 dark:lg:bg-zinc-800  dark:lg:hover:bg-zinc-700 transition"
       >
-        <Search className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
+        <Search className="w-5 h-5 text-zinc-500 dark:text-zinc-400" />
         <p
-          className="font-semibold text-sm text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-300 dark:text-zinc-300 transition"
+          className="font-semibold text-sm text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-300 dark:text-zinc-300 transition hidden lg:block"
         >
           Search
         </p>

@@ -72,7 +72,7 @@ export function DataTableCustomer({
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-4 gap-3">
         <Input
           placeholder="Filter Customers..."
           value={filteringCustomer}

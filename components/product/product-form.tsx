@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { CreateProduct } from "@/action/product";
 import { toast } from "../ui/use-toast";
+import { Spinner } from "../spinner";
 
 const FormSchemaProduct = z.object({
   productName: z.string().min(2, {
@@ -39,6 +40,10 @@ export function ProductForm() {
     },
   });
 
+  const {
+    formState: { isSubmitting },
+  } = form;
+
   async function onSubmit(data: z.infer<typeof FormSchemaProduct>) {
     try {
       await CreateProduct({ values: data });
@@ -55,66 +60,69 @@ export function ProductForm() {
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <FormField
-          control={form.control}
-          name="productName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Product Name</FormLabel>
-              <FormControl>
-                <Input
-                  className="uppercase"
-                  placeholder="Product Name"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="hsnCode"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>HSN Code</FormLabel>
-              <FormControl>
-                <Input placeholder="22011010" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="cgstRate"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>CGST Rate</FormLabel>
-              <FormControl>
-                <Input placeholder="CGST Rate" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="sgstRate"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>SGST Rate</FormLabel>
-              <FormControl>
-                <Input placeholder="SGST Rate" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Create Product</Button>
-      </form>
-    </Form>
+    <>
+      {isSubmitting && <Spinner size={"lg"} />}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <FormField
+            control={form.control}
+            name="productName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Product Name</FormLabel>
+                <FormControl>
+                  <Input
+                    className="uppercase"
+                    placeholder="Product Name"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="hsnCode"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>HSN Code</FormLabel>
+                <FormControl>
+                  <Input placeholder="22011010" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="cgstRate"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>CGST Rate</FormLabel>
+                <FormControl>
+                  <Input placeholder="CGST Rate" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="sgstRate"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>SGST Rate</FormLabel>
+                <FormControl>
+                  <Input placeholder="SGST Rate" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit">Create Product</Button>
+        </form>
+      </Form>
+    </>
   );
 }

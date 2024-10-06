@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { CreateCustomer } from "@/action/customer";
+import { Spinner } from "../spinner";
 
 const FormSchemaCustomer = z.object({
   customerName: z.string().min(2, {
@@ -47,6 +48,10 @@ export function CustomerForm() {
     },
   });
 
+  const {
+    formState: { isSubmitting },
+  } = form;
+
   async function onSubmit(data: z.infer<typeof FormSchemaCustomer>) {
     try {
       await CreateCustomer({ values: data });
@@ -63,75 +68,90 @@ export function CustomerForm() {
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <FormField
-          control={form.control}
-          name="customerName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Customer Name</FormLabel>
-              <FormControl>
-                <Input className="uppercase" placeholder="Customer Name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="address"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Address</FormLabel>
-              <FormControl>
-                <Input className="uppercase" placeholder="Address" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="gstIn"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>GSTIN/UIN</FormLabel>
-              <FormControl>
-                <Input className="uppercase" placeholder="GSTIN/UIN" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="state"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>State</FormLabel>
-              <FormControl>
-                <Input placeholder="State" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="stateCode"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>State Code</FormLabel>
-              <FormControl>
-                <Input placeholder="State Code" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Create Customer</Button>
-      </form>
-    </Form>
+    <>
+      {isSubmitting && <Spinner size={"lg"} />}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <FormField
+            control={form.control}
+            name="customerName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Customer Name</FormLabel>
+                <FormControl>
+                  <Input
+                    className="uppercase"
+                    placeholder="Customer Name"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="address"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Address</FormLabel>
+                <FormControl>
+                  <Input
+                    className="uppercase"
+                    placeholder="Address"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="gstIn"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>GSTIN/UIN</FormLabel>
+                <FormControl>
+                  <Input
+                    className="uppercase"
+                    placeholder="GSTIN/UIN"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="state"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>State</FormLabel>
+                <FormControl>
+                  <Input placeholder="State" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="stateCode"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>State Code</FormLabel>
+                <FormControl>
+                  <Input placeholder="State Code" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit">Create Customer</Button>
+        </form>
+      </Form>
+    </>
   );
 }

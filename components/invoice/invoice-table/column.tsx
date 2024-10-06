@@ -57,18 +57,16 @@ export const columns: ColumnDef<Invoice>[] = [
     },
     cell: ({ row }) => {
       const id = row.original.id;
-      return (
-        <Link href={`/invoices/${id}`}>
-          {row.getValue("invoiceNo")}
-        </Link>
-      )
+      return <Link href={`/invoices/${id}`}>{row.getValue("invoiceNo")}</Link>;
     },
   },
   {
     accessorKey: "invoiceDate",
     header: "Invoice Date",
     cell: ({ row }) => (
-      <div className="lowercase">{format(row.getValue("invoiceDate"), 'dd-MM-yyyy')}</div>
+      <div className="lowercase">
+        {format(row.getValue("invoiceDate"), "dd-MM-yyyy")}
+      </div>
     ),
   },
   {
@@ -89,7 +87,12 @@ export const columns: ColumnDef<Invoice>[] = [
     header: "Product",
     accessorKey: "product",
     cell: ({ row }) => (
-      <HoverCardToolTip side="top" label="Product" align="center" className="min-w-max">
+      <HoverCardToolTip
+        side="top"
+        label="Product"
+        align="center"
+        className="min-w-max"
+      >
         <div className="capitalize">{row.getValue("product")}</div>
       </HoverCardToolTip>
     ),
@@ -138,16 +141,13 @@ export const columns: ColumnDef<Invoice>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <Link href={`/invoices/${id}/edit`}>
-              <DropdownMenuItem>
-                Edit Invoice
-              </DropdownMenuItem>
+              <DropdownMenuItem>Edit Invoice</DropdownMenuItem>
             </Link>
             <DropdownMenuSeparator />
             <Link href={`/invoices/${id}`}>
-              <DropdownMenuItem>
-                Preview Invoice
-              </DropdownMenuItem>
+              <DropdownMenuItem>Preview Invoice</DropdownMenuItem>
             </Link>
+            <DropdownMenuSeparator />
             <PrintInvoive invoiceId={id} />
           </DropdownMenuContent>
         </DropdownMenu>
@@ -155,7 +155,6 @@ export const columns: ColumnDef<Invoice>[] = [
     },
   },
 ];
-
 
 export const PrintInvoive = ({ invoiceId }: { invoiceId: string }) => {
   const router = useRouter();

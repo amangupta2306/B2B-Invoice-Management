@@ -16,11 +16,11 @@ export const Customer = async () => {
     },
   });
   return (
-    <div className="lg:flex gap-3 lg:p-2">
+    <div className="lg:flex gap-3 lg:p-4">
       <Card className="lg:w-1/3">
         <CardHeader>
-          <CardTitle>Create Customer</CardTitle>
-          <CardDescription>Customer</CardDescription>
+          <CardTitle>MUKESH TRADERS</CardTitle>
+          <CardDescription>Create Customer</CardDescription>
         </CardHeader>
         <CardContent>
           <CustomerForm />

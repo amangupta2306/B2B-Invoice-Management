@@ -12,11 +12,11 @@ import { ProductTable } from "./product-table/product-table";
 export const Product = async () => {
   const dbproducts = await prisma.product.findMany();
   return (
-    <div className="lg:flex gap-3 lg:p-2">
+    <div className="lg:flex gap-3 lg:p-4">
       <Card className="lg:w-1/3">
         <CardHeader>
-          <CardTitle>Create Product</CardTitle>
-          <CardDescription>Product</CardDescription>
+          <CardTitle>MUKESH TRADERS</CardTitle>
+          <CardDescription>Create Product</CardDescription>
         </CardHeader>
         <CardContent>
           <ProductForm />

@@ -23,8 +23,8 @@ export const Invoice = async () => {
     <div className="lg:p-4">
       <Card>
         <CardHeader className="px-5 lg:px-6">
-          <CardTitle>Create Invoice</CardTitle>
-          <CardDescription>Invoice </CardDescription>
+          <CardTitle>MUKESH TRADERS</CardTitle>
+          <CardDescription>Create Invoice</CardDescription>
         </CardHeader>
         <CardContent className="px-3 lg:px-6">
           <InvoiceForm
