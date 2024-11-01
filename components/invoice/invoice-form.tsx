@@ -237,6 +237,7 @@ export const InvoiceForm = ({
       // form.setValue("productDetails", invoiceInfo?.pricedProducts);  it need to be fixed
     }
   }, [isEdit]);
+  console.log(invoiceInfo, "aman");
 
   return (
     <>
@@ -290,9 +291,9 @@ export const InvoiceForm = ({
                         <SelectItem value="July">July</SelectItem>
                         <SelectItem value="August">August</SelectItem>
                         <SelectItem value="September">September</SelectItem>
-                        <SelectItem value="1October">October</SelectItem>
-                        <SelectItem value="1November">November</SelectItem>
-                        <SelectItem value="1December">December</SelectItem>
+                        <SelectItem value="October">October</SelectItem>
+                        <SelectItem value="November">November</SelectItem>
+                        <SelectItem value="December">December</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
