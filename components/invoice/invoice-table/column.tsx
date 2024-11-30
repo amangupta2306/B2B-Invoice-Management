@@ -70,6 +70,14 @@ export const columns: ColumnDef<Invoice>[] = [
     ),
   },
   {
+    header: "Month",
+    accessorKey: "monthOf",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("monthOf")}</div>
+
+    ),
+  },
+  {
     header: "Customer Name",
     accessorKey: "customerName",
     cell: ({ row }) => (
@@ -106,7 +114,7 @@ export const columns: ColumnDef<Invoice>[] = [
   },
   {
     accessorKey: "totalTaxGST",
-    header: "Total Tax GST",
+    header: "Total Tax",
     cell: ({ row }) => (
       <div className="capitalize">{row.getValue("totalTaxGST")}</div>
     ),
