@@ -21,7 +21,7 @@ export const Invoice = async () => {
 
   return (
     <div className="lg:p-4">
-      <Card>
+      <Card className="border-2 shadow-lg">
         <CardHeader className="px-5 lg:px-6">
           <CardTitle>MUKESH TRADERS</CardTitle>
           <CardDescription>Create Invoice</CardDescription>

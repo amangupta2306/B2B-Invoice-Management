@@ -24,8 +24,8 @@ export const Product = async () => {
       </Card>
       <Card className="lg:w-2/3">
         <CardHeader>
-          <CardTitle>Product List</CardTitle>
-          <CardDescription>Product Table</CardDescription>
+          <CardTitle>MUKESH TRADERS</CardTitle>
+          <CardDescription>Product List</CardDescription>
         </CardHeader>
         <CardContent>
           <ProductTable products={dbproducts} />

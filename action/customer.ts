@@ -36,6 +36,8 @@ export const DeleteCustomer = async (id: string) => {
 };
 
 export const EditCustomer = async (id: string, values: any) => {
+  console.log(values, "values")
+  console.log(values.customerName, "Customer")
   try {
     const editCustomer = await prisma.customer.update({
       where: { id },

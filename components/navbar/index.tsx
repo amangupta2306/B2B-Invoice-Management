@@ -10,6 +10,9 @@ import { AccountSwitcher } from "./account-switcher";
 import { DarkModeToggle } from "../theme-toggle";
 import { NavbarItems } from "./navbar-items";
 import { SearchBar } from "./search-bar";
+import { Profile } from "./profile";
+import Link from "next/link";
+import Image from "next/image";
 
 export const Navbar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -47,21 +50,21 @@ export const Navbar = () => {
   }, [lastScrollY]);
 
   return (
-    <div className="relative z-10">
+    <div className="relative z-10 ">
       <div
         className={cn(
-          "fixed w-screen flex items-center p-3 border-b gap-3 bg-background transition-all duration-200 ease-in-out",
-          isNavbarVisible
-            ? ""
-            : "hidden"
+          "fixed top-10 left-80 rounded-full w-full bg-red-900 flex items-center p-3 border-b gap-3  transition-all duration-200 ease-in-out",
+          isNavbarVisible ? "" : "hidden"
         )}
       >
-        <div className={cn("", isCollapsed ? "w-full" : "w-96")}>
+        <div className={cn("bg-red-900", isCollapsed ? "w-full" : "w-96")}>
           <AccountSwitcher isCollapsed={isCollapsed} />
         </div>
 
         <div className="flex lg:w-full space-x-2">
           {isCollapsed && <DarkModeToggle />}
+
+          <Profile />
 
           <SearchBar
             data={[
@@ -83,14 +86,20 @@ export const Navbar = () => {
       </div>
       <aside
         className={cn(
-          "fixed bottom-0 lg:left-0 lg:top-[64px] lg:p-2 border border-l-0 w-screen lg:h-screen" +
+          "fixed bottom-0 lg:left-0 lg:p-2 border border-l-0 w-screen lg:h-screen flex" +
             "transition-all duration-200 ease-in-out bg-background border-r",
           isCollapsed ? "w-full" : "w-72",
-          isNavbarVisible
-            ? ""
-            : "hidden"
+          isNavbarVisible ? "" : "hidden"
         )}
       >
+        {" "}
+        <Link
+          href={"/"}
+          className="flex items-center text-4xl font-semibold text-blue-500 p-3 pb-10"
+        >
+          <Image src={"/Logo.png"} alt="Logo" width={50} height={50} />
+          B2B <span className="dark:text-white text-black">IMS</span>
+        </Link>
         <NavbarItems isCollapsed={isCollapsed} />
       </aside>
     </div>

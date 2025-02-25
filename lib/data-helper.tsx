@@ -1,27 +1,32 @@
 import { BoxIcon, ReceiptTextIcon, UsersRoundIcon } from "lucide-react";
+import { useSession } from "next-auth/react";
 
-export const ACCOUNTS = [
-  {
-    label: "Mukesh Trader",
-    email: "guptamukesh1487@gmail.com",
-    icon: (
-      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <title>Vercel</title>
-        <path d="M24 22.525H0l12-21.05 12 21.05z" fill="currentColor" />
-      </svg>
-    ),
-  },
-  {
-    label: "Ravi kumar",
-    email: "ravikumar@gmail.com",
-    icon: (
-      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <title>Vercel</title>
-        <path d="M24 22.525H0l12-21.05 12 21.05z" fill="currentColor" />
-      </svg>
-    ),
-  },
-];
+export const ACCOUNTS = () => {
+  const { data: session } = useSession();
+
+  return [
+    {
+      label: session?.user?.name || "Unknown User",
+      email: session?.user?.email || "Unknown Email",
+      icon: (
+        <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <title>Vercel</title>
+          <path d="M24 22.525H0l12-21.05 12 21.05z" fill="currentColor" />
+        </svg>
+      ),
+    },
+    {
+      label: session?.user?.name || "Unknown User",
+      email: session?.user?.email || "Unknown Email",
+      icon: (
+        <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <title>Vercel</title>
+          <path d="M24 22.525H0l12-21.05 12 21.05z" fill="currentColor" />
+        </svg>
+      ),
+    },
+  ];
+};
 
 export const LINKS = [
   {

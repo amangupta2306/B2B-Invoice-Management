@@ -25,12 +25,13 @@ interface AccountSwitcherProps {
 
 export function AccountSwitcher({
   isCollapsed = false,
-  accounts = ACCOUNTS,
+  accounts = ACCOUNTS(),
 }: AccountSwitcherProps) {
   const [selectedAccount, setSelectedAccount] = React.useState<string>(
     accounts[0].email
   );
 
+  
   return (
     <div className="flex gap-3 items-center justify-center">
       <Select defaultValue={selectedAccount} onValueChange={setSelectedAccount}>

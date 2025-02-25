@@ -4,10 +4,10 @@ import { Inter as FontSans } from "next/font/google";
 
 import { cn } from "@/lib/utils";
 
-import { Navbar } from "@/components/navbar/index";
-
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
+import { SessionWrapper } from "@/components/session-wraper";
+import { ModalProvider } from "@/components/providers/model-provider";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -17,6 +17,7 @@ const fontSans = FontSans({
 export const metadata: Metadata = {
   title: "GST - Invoice",
   description: "Generated to create GST Invoices",
+  icons: { icon: "/Logo.png" },
 };
 
 export default function RootLayout({
@@ -33,16 +34,19 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
+        <SessionWrapper>
           <ThemeProvider
+            forcedTheme="light"
             attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
           >
-            <Navbar />
-            <main className="py-14 lg:pl-72 lg:pt-14">{children}</main>
+            {children}
+            <ModalProvider />
             <Toaster />
           </ThemeProvider>
+        </SessionWrapper>
       </body>
     </html>
   );

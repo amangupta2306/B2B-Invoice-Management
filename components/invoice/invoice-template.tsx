@@ -149,8 +149,8 @@ export const InvoiceTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
 
             <div className="relative -z-10 h-[35.1rem] w-full text-center border-y border-black dark:border-white">
               <div className="flex border-b border-black dark:border-white items-center text-center">
-                <div className="border-r border-black dark:border-white w-10 ">Sl No.</div>
-                <div className="border-r border-black dark:border-white w-[322px] ">
+                <div className="border-r border-black dark:border-white w-10">Sl No.</div>
+                <div className="border-r border-black dark:border-white w-[322px]">
                   Description of Goods
                 </div>
                 <div className="border-r border-black dark:border-white w-16">HSN/SAC</div>

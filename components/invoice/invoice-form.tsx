@@ -97,6 +97,7 @@ export const InvoiceForm = ({
   const params = useParams();
 
   const currDate = new Date();
+
   const lastMonth = new Date(
     currDate.setMonth(currDate.getMonth() - 1)
   ).toLocaleString("en-US", { month: "long" });
@@ -107,7 +108,7 @@ export const InvoiceForm = ({
       invoiceNo: isEdit
         ? lastInvoiceNo
         : (lastInvoiceNo ? Number(lastInvoiceNo) + 1 : 1000).toString(),
-      invoiceDate: isEdit ? lastInvoiceDate : new Date(),
+      invoiceDate: lastInvoiceDate,
       monthOf: lastMonth,
       yearOf: currDate.getFullYear().toString(),
       customerId: "",
@@ -152,6 +153,7 @@ export const InvoiceForm = ({
     const totalInvoiceValue = Number(totalTaxableValue + totalTaxGST).toFixed(
       2
     );
+
     form.setValue("totalTaxableValue", Number(totalTaxableValue.toFixed(2)));
     form.setValue("totalTaxGST", Number(totalTaxGST.toFixed(2)));
     form.setValue("totalTaxGST", Number(totalTaxGST.toFixed(2)));
@@ -212,6 +214,7 @@ export const InvoiceForm = ({
             isOutsideDelhiInvoice,
             productPrices,
           });
+
       if (isSuccess) {
         toast({
           description: "Invoice created successfully!",
@@ -236,8 +239,7 @@ export const InvoiceForm = ({
       form.setValue("customerId", invoiceInfo?.customerId);
       // form.setValue("productDetails", invoiceInfo?.pricedProducts);  it need to be fixed
     }
-  }, [isEdit]);
-  console.log(invoiceInfo, "aman");
+  }, [isEdit, form]);
 
   return (
     <>
@@ -254,7 +256,7 @@ export const InvoiceForm = ({
               render={({ field }) => (
                 <FormItem className="flex-1">
                   <FormLabel>Invoice Number</FormLabel>
-                  <FormControl>
+                  <FormControl className="border-2 shadow">
                     <Input
                       disabled
                       placeholder="Invoice Number"
@@ -273,12 +275,12 @@ export const InvoiceForm = ({
               render={({ field }) => (
                 <FormItem className="flex-1">
                   <FormLabel>Select Month</FormLabel>
-                  <FormControl>
+                  <FormControl className="border-2 shadow">
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
-                      <SelectTrigger id="month">
+                      <SelectTrigger id="month" className="border-2 shadow">
                         <SelectValue placeholder="Month" />
                       </SelectTrigger>
                       <SelectContent>
@@ -313,7 +315,7 @@ export const InvoiceForm = ({
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
-                      <SelectTrigger id="year">
+                      <SelectTrigger id="year" className="border-2 shadow">
                         <SelectValue placeholder="Year" />
                       </SelectTrigger>
                       <SelectContent>
@@ -341,11 +343,11 @@ export const InvoiceForm = ({
                   <FormLabel className="mb-2">Date of Invoice</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <FormControl>
+                      <FormControl className="border-2 shadow">
                         <Button
                           variant={"outline"}
                           className={cn(
-                            " pl-3 text-left font-normal",
+                            "pl-3 text-left font-normal",
                             !field.value && "text-muted-foreground"
                           )}
                         >
@@ -358,7 +360,7 @@ export const InvoiceForm = ({
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
+                    <PopoverContent className="w-auto p-0" align="center">
                       <Calendar
                         mode="single"
                         selected={field.value}
@@ -381,7 +383,7 @@ export const InvoiceForm = ({
                 <FormLabel>Customer</FormLabel>
                 <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
                   <PopoverTrigger asChild>
-                    <FormControl>
+                    <FormControl className="border-2 shadow">
                       <Button
                         variant="outline"
                         role="combobox"
@@ -439,6 +441,7 @@ export const InvoiceForm = ({
           <div>
             <Label htmlFor="customerAddress">Address</Label>
             <Input
+              className="border-2 shadow"
               id="customerAddress"
               disabled
               value={currCustomer?.address || ""}
@@ -449,6 +452,7 @@ export const InvoiceForm = ({
             <div className="flex-1">
               <Label htmlFor="customerGST">GST</Label>
               <Input
+                className="border-2 shadow"
                 id="customerGST"
                 value={currCustomer?.gstIn || ""}
                 disabled
@@ -458,6 +462,7 @@ export const InvoiceForm = ({
             <div className="flex-1">
               <Label htmlFor="customerState">State</Label>
               <Input
+                className="border-2 shadow"
                 id="customerState"
                 value={currCustomer?.state || ""}
                 disabled
@@ -467,6 +472,7 @@ export const InvoiceForm = ({
             <div className="flex-1">
               <Label htmlFor="customerStateCode">State Code</Label>
               <Input
+                className="border-2 shadow"
                 id="customerStateCode"
                 value={currCustomer?.stateCode || ""}
                 disabled
@@ -482,7 +488,7 @@ export const InvoiceForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Select Products</FormLabel>
-                  <FormControl>
+                  <FormControl className="border-2 shadow">
                     <MultipleSelector
                       {...field}
                       // onChange={(value) => setProductPrices(value)}
@@ -637,7 +643,7 @@ export const InvoiceForm = ({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Total Taxable Value</FormLabel>
-                <FormControl>
+                <FormControl className="border-2 shadow">
                   <Input
                     disabled
                     placeholder="Total Taxable Value"
@@ -655,7 +661,7 @@ export const InvoiceForm = ({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Total Tax Value</FormLabel>
-                <FormControl>
+                <FormControl className="border-2 shadow">
                   <Input disabled placeholder="Total Tax Value" {...field} />
                 </FormControl>
                 <FormMessage />
@@ -669,7 +675,7 @@ export const InvoiceForm = ({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Total Invoice Value</FormLabel>
-                <FormControl>
+                <FormControl className="border-2 shadow">
                   <Input
                     disabled
                     placeholder="Total Invoice Value"
