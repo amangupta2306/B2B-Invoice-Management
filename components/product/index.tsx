@@ -8,9 +8,15 @@ import {
 import prisma from "@/lib/db";
 import { ProductForm } from "./product-form";
 import { ProductTable } from "./product-table/product-table";
+import { auth } from "@/auth";
 
 export const Product = async () => {
-  const dbproducts = await prisma.product.findMany();
+  const session = await auth();
+  const dbproducts = await prisma.product.findMany({
+    where: {
+      userId: session?.user?.id,
+    },
+  });
   return (
     <div className="lg:flex gap-3 lg:p-4">
       <Card className="lg:w-1/3">

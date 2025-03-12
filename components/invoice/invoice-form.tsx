@@ -46,6 +46,8 @@ import { CreateInvoice, UpdateInvoice } from "@/action/invoice";
 import { useParams } from "next/navigation";
 import { toast } from "../ui/use-toast";
 import { Spinner } from "../spinner";
+import { Customer } from "@prisma/client";
+import { useSession } from "next-auth/react";
 
 const formSchemaInvoice = z.object({
   invoiceNo: z.string().min(1, "Invoice number is required."),
@@ -79,7 +81,7 @@ export const InvoiceForm = ({
 }: {
   isEdit: boolean;
   invoiceInfo?: any;
-  customers: any[];
+  customers: Customer[];
   products: any[];
   lastInvoiceNo: string;
   lastInvoiceDate: Date;
@@ -123,6 +125,8 @@ export const InvoiceForm = ({
     formState: { isSubmitting },
   } = form;
 
+  const session = useSession();
+
   const currCustomerId = form.watch("customerId");
   const selectProduct = form.watch("productDetails");
 
@@ -130,7 +134,8 @@ export const InvoiceForm = ({
     (customer) => customer.id === currCustomerId
   );
   const isOutsideDelhiInvoice =
-    !["delhi"].includes(currCustomer?.state.toLowerCase().trim()) || false;
+    !["delhi"].includes((currCustomer?.state ?? "").toLowerCase().trim()) ||
+    false;
 
   useEffect(() => {
     const newSelecctedProducts = selectProduct.map((product: any) => {
@@ -209,11 +214,14 @@ export const InvoiceForm = ({
             isOutsideDelhiInvoice,
             productPrices,
           })
-        : await CreateInvoice({
-            values,
-            isOutsideDelhiInvoice,
-            productPrices,
-          });
+        : await CreateInvoice(
+            {
+              values,
+              isOutsideDelhiInvoice,
+              productPrices,
+            },
+            session.data?.user?.id || ""
+          );
 
       if (isSuccess) {
         toast({
@@ -505,7 +513,7 @@ export const InvoiceForm = ({
             />
           </div>
 
-          {productPrices?.map((product: any, index: number) => {
+          {productPrices?.map((product: any) => {
             return (
               <div
                 key={product.id}

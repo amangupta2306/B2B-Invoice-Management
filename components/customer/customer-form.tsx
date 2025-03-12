@@ -17,6 +17,10 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { CreateCustomer } from "@/action/customer";
 import { Spinner } from "../spinner";
+import { useEffect } from "react";
+import { Customer } from "@prisma/client";
+import { useSession } from "next-auth/react";
+import { useModal } from "@/store/store";
 
 const FormSchemaCustomer = z.object({
   customerName: z.string().min(2, {
@@ -36,7 +40,7 @@ const FormSchemaCustomer = z.object({
   }),
 });
 
-export function CustomerForm() {
+export function CustomerForm({ customerData }: { customerData: Customer }) {
   const form = useForm<z.infer<typeof FormSchemaCustomer>>({
     resolver: zodResolver(FormSchemaCustomer),
     defaultValues: {
@@ -51,14 +55,28 @@ export function CustomerForm() {
   const {
     formState: { isSubmitting },
   } = form;
+  const { data, type, onClose, isOpen } = useModal();
+
+  const session = useSession();
+
+  useEffect(() => {
+    if (customerData) {
+      form.setValue("customerName", customerData.customerName);
+      form.setValue("address", customerData.address);
+      form.setValue("gstIn", customerData.gstIn);
+      form.setValue("state", customerData.state);
+      form.setValue("stateCode", customerData.stateCode?.toString());
+    }
+  }, [customerData, form]);
 
   async function onSubmit(data: z.infer<typeof FormSchemaCustomer>) {
     try {
-      await CreateCustomer({ values: data });
+      await CreateCustomer({ values: data }, session.data?.user?.id || "");
       toast({
         description: "Customer created successfully!",
       });
       form.reset();
+      onClose();
     } catch (error) {
       toast({
         variant: "destructive",

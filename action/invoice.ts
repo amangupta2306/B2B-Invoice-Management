@@ -3,7 +3,10 @@
 import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
-export const CreateInvoice = async (values: any): Promise<boolean> => {
+export const CreateInvoice = async (
+  values: any,
+  userId: string
+): Promise<boolean> => {
   try {
     const invoice = await prisma.invoice.create({
       data: {
@@ -25,15 +28,16 @@ export const CreateInvoice = async (values: any): Promise<boolean> => {
               cgstAmt: product.cgstAmt.toString(),
               sgstAmt: product.sgstAmt.toString(),
               productTotalValue: product.productTotalValue.toString(),
-              rate: Number(product.rate)
-            }
-          })
-        }
-      }
-    })
-    revalidatePath("/")
-    revalidatePath("/invoices")
-    return true
+              rate: Number(product.rate),
+            };
+          }),
+        },
+        userId: userId,
+      },
+    });
+    revalidatePath("/");
+    revalidatePath("/invoices");
+    return true;
   } catch (error) {
     console.log(error);
     return false;
@@ -44,7 +48,7 @@ export const UpdateInvoice = async (values: any): Promise<boolean> => {
   try {
     const invoice = await prisma.invoice.update({
       where: {
-        id: values.id
+        id: values.id,
       },
       data: {
         invoiceNo: values.values.invoiceNo || 1,
@@ -66,17 +70,17 @@ export const UpdateInvoice = async (values: any): Promise<boolean> => {
               cgstAmt: product.cgstAmt.toString(),
               sgstAmt: product.sgstAmt.toString(),
               productTotalValue: product.productTotalValue.toString(),
-              rate: Number(product.rate)
-            }
-          })
-        }
-      }
-    })
-    revalidatePath("/")
-    revalidatePath("/invoices")
-    return true
+              rate: Number(product.rate),
+            };
+          }),
+        },
+      },
+    });
+    revalidatePath("/");
+    revalidatePath("/invoices");
+    return true;
   } catch (error) {
     console.log(error);
     return false;
   }
-}
+};

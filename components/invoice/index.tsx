@@ -8,16 +8,25 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { auth } from "@/auth";
 
 export const Invoice = async () => {
+  const session = await auth();
+
+  // const googleUserId = session?.user?.id || "";
+  // const objectId = googleUserId.replace(/-/g, "").slice(0, 24);
+  // console.log(objectId, "objectId");
+
   const customers = await prisma.customer.findMany();
   const products = await prisma.product.findMany();
   const invoices = await prisma.invoice.findFirst({
+    where: {
+      userId: session?.user?.id || "",
+    },
     orderBy: {
       createdAt: "desc",
     },
   });
-
 
   return (
     <div className="lg:p-4">

@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
@@ -12,8 +13,22 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Customer } from "@prisma/client";
-import { DeleteCustomer } from "@/action/customer";
+import { DeleteCustomer, EditCustomer } from "@/action/customer";
 import { toast } from "@/components/ui/use-toast";
+import { useModal } from "@/store/store";
+import { CustomerModel } from "@/components/model/customer-model";
+
+const handleEditCustomer = async (id: string, row: Customer) => {
+  // console.log(row, "row");
+
+  //urlprams
+  // push to customer form//
+  try {
+    await EditCustomer(id, row);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const columns: ColumnDef<Customer>[] = [
   {
@@ -96,11 +111,9 @@ export const columns: ColumnDef<Customer>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            {/* <DropdownMenuItem onClick={() => handleEditCustomer(id)}>
-              Edit Customer
-            </DropdownMenuItem> */}
+            <OpenEditingCustomerModal rowData={row.original} />
             <DropdownMenuSeparator />
-            <DropdownMenuItem 
+            <DropdownMenuItem
               onClick={async () => {
                 try {
                   await DeleteCustomer(id);
@@ -110,7 +123,7 @@ export const columns: ColumnDef<Customer>[] = [
                 } catch (error) {
                   toast({
                     description: "Failed to Delete Customer.",
-                  }); 
+                  });
                 }
               }}
             >
@@ -122,3 +135,16 @@ export const columns: ColumnDef<Customer>[] = [
     },
   },
 ];
+
+const OpenEditingCustomerModal = ({ rowData }: { rowData: any }) => {
+  const { onOpen } = useModal();
+  return (
+    // <CustomerModel/>
+    <DropdownMenuItem
+      // onClick={() => handleEditCustomer(id, row.original)}
+      onClick={() => onOpen("customer", rowData)}
+    >
+      Edit Customer
+    </DropdownMenuItem>
+  );
+};

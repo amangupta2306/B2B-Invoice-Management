@@ -101,7 +101,6 @@ export function DataTableInvoice({
   }, [data, date]);
 
   const filteredRows = table.getFilteredRowModel().rows;
-  console.log(filteredRows, "filteredRows");
 
   const sortedDataCsv = [...filteredRows].sort(
     (a, b) => a.original.invoiceNo - b.original.invoiceNo

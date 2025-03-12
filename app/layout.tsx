@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { SessionWrapper } from "@/components/session-wraper";
 import { ModalProvider } from "@/components/providers/model-provider";
+import prisma from "@/lib/db";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -25,27 +26,33 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // const update = await prisma.customer.updateMany({
+  //   data: {
+  //     userId: "67ac5fe56a4ef846aaab8c8d",
+  //   },
+  // });
   return (
     <html suppressHydrationWarning lang="en">
       <head />
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased",
+          "bg-background font-sans antialiased",
           fontSans.variable
         )}
       >
         <SessionWrapper>
-          <ThemeProvider
+          {/* <ThemeProvider
             forcedTheme="light"
             attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
-          >
-            {children}
+          > */}
             <ModalProvider />
+
+            {children}
             <Toaster />
-          </ThemeProvider>
+          {/* </ThemeProvider> */}
         </SessionWrapper>
       </body>
     </html>

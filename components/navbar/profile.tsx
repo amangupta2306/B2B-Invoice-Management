@@ -14,9 +14,9 @@ import { LogOut } from "lucide-react";
 
 export const Profile = () => {
   const { data: session } = useSession();
-  console.log(session, "session");
 
   const userImage = session?.user?.image || "/user.png";
+  const userbane = session?.user?.name || "/user.png";
 
   return (
     <div>
@@ -70,7 +70,6 @@ export const Profile = () => {
 
 export const ProfilePictuture = () => {
   const { data: session } = useSession();
-  console.log(session, "session");
 
   const userImage = session?.user?.image || "/user.png";
 

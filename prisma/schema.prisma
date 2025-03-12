@@ -7,6 +7,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Users {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  username String
+  email    String  @unique
+  password String?
+  image    String?
+
+  invoice       Invoice[]
+  product       Product[]
+  customer      Customer[]
+  localInvoice  LocalInvoice[]
+  localProduct  LocalProduct[]
+  localCustomer LocalCustomer[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Product {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
   productName String @unique @db.String
@@ -16,15 +34,16 @@ model Product {
 
   customPrice CustomPrice[]
 
+  userId String @db.ObjectId
+  user   Users  @relation(fields: [userId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
 }
 
 model CustomPrice {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
-  qty               Int   @db.Int
+  id                String @id @default(auto()) @map("_id") @db.ObjectId
+  qty               Int    @db.Int
   rate              Float
   taxableValue      String
   cgstAmt           String
@@ -35,7 +54,7 @@ model CustomPrice {
   product   Product @relation(fields: [productId], references: [id])
 
   invoiceId String?  @db.ObjectId
-  Invoice   Invoice? @relation(fields: [invoiceId], references: [id])
+  invoice   Invoice? @relation(fields: [invoiceId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -51,6 +70,9 @@ model Customer {
   state        String @db.String
   stateCode    Int    @db.Int
 
+  userId String @db.ObjectId
+  user   Users  @relation(fields: [userId], references: [id])
+
   invoice Invoice[]
 
   createdAt DateTime @default(now())
@@ -60,15 +82,18 @@ model Customer {
 model Invoice {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  invoiceNo   String @unique
+  invoiceNo   String   @unique
   invoiceDate DateTime @default(now())
   monthOf     String
   yearOf      String
 
-  totalTaxableValue String
-  totalTaxGST       String
-  totalInvoiceValue String
+  totalTaxableValue     String
+  totalTaxGST           String
+  totalInvoiceValue     String
   isOutsideDelhiInvoice Boolean
+
+  userId String @db.ObjectId
+  user   Users  @relation(fields: [userId], references: [id])
 
   customerId String   @db.ObjectId
   customer   Customer @relation(fields: [customerId], references: [id])
@@ -79,4 +104,69 @@ model Invoice {
   updatedAt DateTime @updatedAt
 
   @@unique([id, customerId], name: "unique_invoice_customer")
+}
+
+model LocalCustomer {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  customerName String @db.String
+  address      String @unique @db.String
+
+  userId String? @db.ObjectId
+  user   Users?  @relation(fields: [userId], references: [id])
+
+  invoice LocalInvoice[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model LocalProduct {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  productName String @unique @db.String
+
+  userId String? @db.ObjectId
+  user   Users?  @relation(fields: [userId], references: [id])
+
+  customPrice LocalCustomPrice[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model LocalCustomPrice {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  qty               Int    @db.Int
+  rate              Float
+  productTotalValue String
+
+  productId String       @db.ObjectId
+  product   LocalProduct @relation(fields: [productId], references: [id])
+
+  invoiceId String?       @db.ObjectId
+  invoice   LocalInvoice? @relation(fields: [invoiceId], references: [id])
+
+  createdAt DateTime @default(now())
+  updated   DateTime @updatedAt
+}
+
+model LocalInvoice {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  invoiceNo         String @unique
+  monthOf           String
+  totalInvoiceValue String
+
+  userId String? @db.ObjectId
+  user   Users?  @relation(fields: [userId], references: [id])
+
+  customerId String        @db.ObjectId
+  customer   LocalCustomer @relation(fields: [customerId], references: [id])
+
+  pricedProduct LocalCustomPrice[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

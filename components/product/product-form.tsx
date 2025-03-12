@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { CreateProduct } from "@/action/product";
 import { toast } from "../ui/use-toast";
 import { Spinner } from "../spinner";
+import { useSession } from "next-auth/react";
 
 const FormSchemaProduct = z.object({
   productName: z.string().min(2, {
@@ -44,9 +45,11 @@ export function ProductForm() {
     formState: { isSubmitting },
   } = form;
 
+  const session = useSession();
+
   async function onSubmit(data: z.infer<typeof FormSchemaProduct>) {
     try {
-      await CreateProduct({ values: data });
+      await CreateProduct({ values: data }, session?.data?.user?.id || "");
       toast({
         description: "Product created Successfully!",
       });

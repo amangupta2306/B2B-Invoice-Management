@@ -16,9 +16,8 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 import { FcGoogle } from "react-icons/fc";
-import { signInCred } from "@/action/authenication";
+import { signInCredNProvider, signInWGoogle } from "@/action/authenication";
 import { useRouter } from "next/navigation";
-import { signInWGoogle } from "@/lib/async-comp";
 
 export function Login({
   className,
@@ -27,9 +26,15 @@ export function Login({
   const router = useRouter();
   const handleSubmit = async (formData: FormData) => {
     try {
-      const user = await signInCred(formData);
+      const user = await signInCredNProvider(
+        {
+          email: formData.get("email") as string,
+          password: formData.get("password") as string,
+        },
+        "cred"
+      );
       if (user) {
-        router.push("/create-invoice");
+        router.push("/gst/create-invoice");
       }
     } catch (error) {
       console.error(error, "[handleSubmit]");

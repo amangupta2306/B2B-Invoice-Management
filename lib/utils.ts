@@ -25,12 +25,18 @@ export const saltAndHashPassword = async (planPassword: string) => {
   }
 };
 
-export const getUserFromDb = async (email: string, plainPassword: string) => {
+export const getUserFromDb = async (email: string, plainPassword?: string) => {
   try {
     const user = await prisma.users.findUnique({ where: { email } });
     if (!user) throw new Error("User not found!");
 
-    const isValid = await bcryptjs.compare(plainPassword, user.password);
+    if (!plainPassword) return user;
+
+    const isValid =
+      plainPassword &&
+      user.password &&
+      (await bcryptjs.compare(plainPassword, user.password));
+
     if (isValid) {
       return user;
     }
