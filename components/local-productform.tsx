@@ -33,7 +33,7 @@ export const LocalProductForm = () => {
   async function onSubmit(values: z.infer<typeof FormSchemaLocalProduct>) {
     try {
       const createLocalProduct = await CreateLocalProduct(
-        values,
+        (values as any),
         session.data?.user?.id || ""
       );
       if (createLocalProduct) {

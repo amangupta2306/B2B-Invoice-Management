@@ -5,7 +5,7 @@ import { create } from "zustand";
 export type ModalType = "customer";
 
 interface ModalData {
-  data?: Customer;
+  customer?: Customer;
 }
 
 interface ModalStore {

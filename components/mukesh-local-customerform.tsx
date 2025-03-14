@@ -40,7 +40,7 @@ export const MukeshLocalCustomerForm = () => {
 
   async function onSubmit(values: z.infer<typeof FormSchemaCustomer>) {
     try {
-      await CreateLocalCustomer(values);
+      await CreateLocalCustomer(values as any);
       toast({
         description: "Customer created successfully!",
       });

@@ -40,7 +40,7 @@ const FormSchemaCustomer = z.object({
   }),
 });
 
-export function CustomerForm({ customerData }: { customerData: Customer }) {
+export function CustomerForm({ customerData }: { customerData?: Customer }) {
   const form = useForm<z.infer<typeof FormSchemaCustomer>>({
     resolver: zodResolver(FormSchemaCustomer),
     defaultValues: {
