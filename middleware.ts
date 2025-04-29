@@ -1,11 +1,15 @@
 import { auth } from "./auth";
 
 const authRoutes = [
-  "/gst/dashboard",
+  "/dashboard",
   "/gst/create-invoice",
-  "/gst/customers",
   "/gst/invoices",
+  "/gst/customers",
   "/gst/products",
+  "/local/create-invoice",
+  "/local/invoices",
+  "/local/customers",
+  "/local/products",
 ];
 
 const authPages = ["/auth/signin", "/auth/signup"];
