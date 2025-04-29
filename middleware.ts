@@ -16,7 +16,7 @@ export default auth((req) => {
   }
 
   if (req.auth && authPages.includes(req.nextUrl.pathname)) {
-    return Response.redirect(new URL("/gst/create-invoice", req.nextUrl.origin));
+    return Response.redirect(new URL("/dashboard", req.nextUrl.origin));
   }
 });
 

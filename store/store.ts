@@ -1,11 +1,32 @@
-"use client"
-import { Customer } from "@prisma/client";
+"use client";
+
+import { Customer, LocalCustomer, LocalProduct, Product } from "@prisma/client";
 import { create } from "zustand";
 
-export type ModalType = "customer";
+export type ModalType =
+  | "customer"
+  | "editCustomer"
+  | "deleteCustomer"
+  | "product"
+  | "editProduct"
+  | "deleteProduct"
+  | "invoice"
+  | "editInvoice"
+  | "localCustomer"
+  | "editLocalCustomer"
+  | "deleteLocalCustomer"
+  | "localProduct"
+  | "editLocalProduct"
+  | "deleteLocalProduct"
+  | "localInvoice"
+  | "editLocalInvoice"
+  | "companyProfile";
 
 interface ModalData {
   customer?: Customer;
+  localCustomer?: LocalCustomer;
+  product?: Product;
+  localProduct?: LocalProduct;
 }
 
 interface ModalStore {

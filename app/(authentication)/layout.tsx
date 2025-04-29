@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Log in | B2BMIS",
+  title: "Log in | B2BIMS",
   description: "Generated to create GST Invoices",
   icons: { icon: "/Logo.png" },
 };

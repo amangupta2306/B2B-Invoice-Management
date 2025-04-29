@@ -36,7 +36,8 @@ export const CreateInvoice = async (
       },
     });
     revalidatePath("/");
-    revalidatePath("/invoices");
+    revalidatePath("/gst/create-invoice");
+    revalidatePath("/gst/invoices");
     return true;
   } catch (error) {
     console.log(error);
@@ -77,10 +78,56 @@ export const UpdateInvoice = async (values: any): Promise<boolean> => {
       },
     });
     revalidatePath("/");
-    revalidatePath("/invoices");
+    revalidatePath("/gst/invoices");
     return true;
   } catch (error) {
     console.log(error);
     return false;
+  }
+};
+
+export const CreateLocalInvoice = async (values: any, userId: string) => {
+  try {
+    const newLocalInvoice = await prisma.localInvoice.create({
+      data: {
+        invoiceNo: values.values.invoiceNo,
+        customerId: values.values.customerId,
+        totalInvoiceValue: values.values.totalInvoiceValue.toString(),
+        pricedProduct: {
+          create: values.productPrices.map((product: any) => {
+            return {
+              productId: product.id,
+              qty: Number(product.qty),
+              rate: Number(product.rate),
+              productTotalValue: product.productTotalValue.toString(),
+            };
+          }),
+        },
+        userId: userId,
+      },
+    });
+    revalidatePath("/local/create-invoice");
+    revalidatePath("/local/invoices");
+    return newLocalInvoice;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateLocalInvoice = async (id: string, values: any) => {
+  try {
+    const editLocalInvoice = await prisma.localInvoice.update({
+      where: {
+        id,
+      },
+      data: {
+        invoiceNo: values.invoiceNo,
+      },
+    });
+    revalidatePath("/local/create-invoice");
+    revalidatePath("/local/invoices");
+    return editLocalInvoice;
+  } catch (error) {
+    console.log(error);
   }
 };

@@ -14,6 +14,16 @@ model Users {
   password String?
   image    String?
 
+  companyName    String? @db.String
+  gstNo          String? @db.String
+  companyAddress String? @db.String
+  state          String? @db.String
+  stateCode      Int?    @db.Int
+  bankName       String? @db.String
+  bankBranch     String? @db.String
+  bankAccountNo  String? @db.String
+  bankIfscCode   String? @db.String
+
   invoice       Invoice[]
   product       Product[]
   customer      Customer[]
@@ -27,7 +37,7 @@ model Users {
 
 model Product {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
-  productName String @unique @db.String
+  productName String @db.String
   hsnCode     Int    @db.Int
   cgstRate    Float
   sgstRate    Float
@@ -39,6 +49,8 @@ model Product {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // @@unique([productName, userId], name: "unique_productName_user")
 }
 
 model CustomPrice {
@@ -82,7 +94,7 @@ model Customer {
 model Invoice {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  invoiceNo   String   @unique
+  invoiceNo   String
   invoiceDate DateTime @default(now())
   monthOf     String
   yearOf      String
@@ -103,7 +115,7 @@ model Invoice {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([id, customerId], name: "unique_invoice_customer")
+  @@unique([invoiceNo, userId], name: "unique_invoice_user")
 }
 
 model LocalCustomer {
@@ -155,8 +167,8 @@ model LocalCustomPrice {
 model LocalInvoice {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  invoiceNo         String @unique
-  monthOf           String
+  invoiceNo         String
+  // monthOf           String
   totalInvoiceValue String
 
   userId String? @db.ObjectId

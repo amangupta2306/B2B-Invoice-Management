@@ -1,9 +1,10 @@
 import prisma from "@/lib/db";
-import { InvoiceTable } from "@/components/invoice/invoice-table/invoice-table";
 import { auth } from "@/auth";
+import { InvoiceTable } from "@/components/gst/invoice/invoice-table/invoice-table";
 
 export default async function InvoicesPage() {
   const session = await auth();
+  
   const dbInvoices = await prisma.invoice.findMany({
     where: {
       userId: session?.user?.id,

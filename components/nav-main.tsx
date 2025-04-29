@@ -1,6 +1,10 @@
 "use client";
 
-import { ChevronRight, type LucideIcon } from "lucide-react";
+import {
+  ChevronRight,
+  LayoutDashboardIcon,
+  type LucideIcon,
+} from "lucide-react";
 
 import {
   Collapsible,
@@ -19,6 +23,14 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 
+const itemsWithoutDD = [
+  {
+    title: "Dashboard",
+    url: "/dashboard",
+    icon: LayoutDashboardIcon,
+  },
+];
+
 export function NavMain({
   items,
 }: {
@@ -36,7 +48,23 @@ export function NavMain({
 }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>B2BMIS</SidebarGroupLabel>
+      <SidebarGroupLabel className="text-white">B2BIMS</SidebarGroupLabel>
+      <SidebarMenu>
+        {itemsWithoutDD.map((item) => (
+          <SidebarMenuItem key={item.title}>
+            <SidebarMenuButton
+              asChild
+              tooltip={item.title}
+              className="text-white hover:text-white hover:bg-slate-700"
+              >
+              <Link href={item.url}>
+                {item.icon && <item.icon />}
+                <span>{item.title}</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        ))}
+      </SidebarMenu>
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible
@@ -49,7 +77,7 @@ export function NavMain({
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton
                   tooltip={item.title}
-                  className="hover:bg-slate-700"
+                  className="text-white hover:text-white hover:bg-slate-700"
                 >
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
@@ -62,7 +90,7 @@ export function NavMain({
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton
                         asChild
-                        className="hover:bg-slate-700"
+                        className="text-gray-300 hover:text-gray-300 hover:bg-slate-700"
                       >
                         <Link href={subItem.url}>
                           <div className="flex items-center justify-center">

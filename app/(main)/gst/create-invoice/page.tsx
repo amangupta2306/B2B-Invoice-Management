@@ -1,5 +1,5 @@
-import { Invoice } from "@/components/invoice";
+import { Invoice } from "@/components/gst/invoice";
 
 export default async function CreateInvoice() {
-  return <Invoice />
+  return <Invoice />;
 }

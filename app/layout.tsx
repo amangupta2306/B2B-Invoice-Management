@@ -5,10 +5,9 @@ import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/sonner";
 import { SessionWrapper } from "@/components/session-wraper";
-import { ModalProvider } from "@/components/providers/model-provider";
-import prisma from "@/lib/db";
+import { ModalProvider } from "@/components/providers/modal-provider";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -26,19 +25,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // const update = await prisma.customer.updateMany({
-  //   data: {
-  //     userId: "67ac5fe56a4ef846aaab8c8d",
-  //   },
-  // });
+
   return (
     <html suppressHydrationWarning lang="en">
       <head />
       <body
-        className={cn(
-          "bg-background font-sans antialiased",
-          fontSans.variable
-        )}
+        className={cn("bg-background font-sans antialiased", fontSans.variable)}
       >
         <SessionWrapper>
           {/* <ThemeProvider
@@ -48,10 +40,10 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           > */}
-            <ModalProvider />
+          <ModalProvider />
 
-            {children}
-            <Toaster />
+          {children}
+          <Toaster />
           {/* </ThemeProvider> */}
         </SessionWrapper>
       </body>

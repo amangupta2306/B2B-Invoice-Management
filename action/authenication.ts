@@ -38,13 +38,10 @@ export async function signInCredNProvider(
   }
 
   if (username && type === "cred") {
-    console.log(username, "username");
     await signInCred({ email, password, username });
     return true;
   }
   if (!username && type === "cred") {
-    console.log(username, "username23");
-
     await signInCred({ email, password });
     return true;
   }
@@ -57,7 +54,6 @@ export async function signInCredNProvider(
     });
 
     if (user) {
-      console.log(user, "user");
       return { valid: false, error: "User already exist" };
     }
 
@@ -102,14 +98,12 @@ export async function signInCred(formData: AuthCredentials) {
   }
 
   try {
-    console.log(email, password,username, "email, password");
-
     await signIn("credentials", {
       email,
       password,
       redirect: false,
     });
-    
+
     return true;
   } catch (error) {
     console.error(error, "[signIn]");

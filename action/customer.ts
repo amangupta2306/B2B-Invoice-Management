@@ -1,7 +1,6 @@
 "use server";
 
 import prisma from "@/lib/db";
-import { LocalCustomer } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 export const CreateCustomer = async (values: any, userId: string) => {
@@ -37,7 +36,7 @@ export const DeleteCustomer = async (id: string) => {
   }
 };
 
-export const EditCustomer = async (id: string, values: any) => {
+export const UpdateCustomer = async (id: string, values: any) => {
   try {
     const editCustomer = await prisma.customer.update({
       where: { id },
@@ -58,17 +57,52 @@ export const EditCustomer = async (id: string, values: any) => {
   }
 };
 
-export const CreateLocalCustomer = async (values: LocalCustomer) => {
+export const CreateLocalCustomer = async (values: any, userId: string) => {
   try {
     const newLocalCustomer = await prisma.localCustomer.create({
       data: {
-        customerName: values.customerName.toUpperCase(),
-        address: values.address.toUpperCase(),
+        customerName: values.values.customerName.toUpperCase(),
+        address: values.values.address.toUpperCase(),
+        userId: userId,
+      },
+    });
+    revalidatePath("/");
+    revalidatePath("/local/customers");
+    return newLocalCustomer;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const UpdateLocalCustomer = async (id: string, values: any) => {
+  try {
+    const editLocalCustomer = await prisma.localCustomer.update({
+      where: {
+        id,
+      },
+      data: {
+        customerName: values.customerName?.toUpperCase(),
+        address: values.address?.toUpperCase(),
       },
     });
     revalidatePath("/");
     revalidatePath("/customers");
-    return newLocalCustomer;
+    return editLocalCustomer;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const DeleteLocalCustomer = async (id: string) => {
+  try {
+    const delLocalCustomer = await prisma.localCustomer.delete({
+      where: {
+        id,
+      },
+    });
+    revalidatePath("/");
+    revalidatePath("/customers");
+    return delLocalCustomer;
   } catch (error) {
     console.log(error);
   }

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { cn, formatCurrencyForIndia } from "@/lib/utils";
 import { useReactToPrint } from "react-to-print";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
@@ -50,7 +49,6 @@ export const SmlTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
   };
   5;
 
-
   return (
     <>
       <div className="max-w-screen-md container mx-auto">
@@ -65,7 +63,7 @@ export const SmlTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
       </div>
 
       <div ref={componentRef} id="divToPrint">
-        <div className="border border-black dark:border-white rounded-xl m-5 max-h-full">
+        <div className="border border-black dark:border-white rounded-xl m-10">
           <div className="text-center">
             <h4 className="underline">BILL/CASH MEMO</h4>
 
@@ -81,52 +79,87 @@ export const SmlTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
           <div className="max-w-full border-black dark:border-white mt-2">
             <div className="grid grid-cols-2 justify-between border-b border-black dark:border-white w-full">
               <div className="p-1 border-r border-t border-black dark:border-white">
-                S. No :
+                S. No : 1000
               </div>
               <div className="p-1 border-t border-black dark:border-white">
-                Date :{" "}
+                Date : 24-01-2025
               </div>
             </div>
-            <div className="p-1">M/S : </div>
+            <div className="p-1">M/S : Aman</div>
           </div>
 
           <div className="h-[470px]">
             <div className="flex max-w-full border-black dark:border-white text-center">
-              <div className="w-10 border-r border-b border-t border-black dark:border-white">
-                Qty.
+              <div className="w-20 border-r border-b border-t border-black dark:border-white">
+                Sl No.
               </div>
-              <div className="w-96 border-r border-b border-t border-black dark:border-white">
-                DESCRIPTION
+              <div className="w-[600px] border-r border-b border-t border-black dark:border-white">
+                Description of Goods
               </div>
-              <div className="w-14 border-r border-b border-t border-black dark:border-white">
+              <div className="w-36 border-r border-b border-t border-black dark:border-white">
+                Quantity
+              </div>
+              <div className="w-32 border-r border-b border-t border-black dark:border-white">
                 Rate
               </div>
-              <div className="w-20 border-b border-t border-black dark:border-white">
+              <div className="w-40 border-b border-t border-black dark:border-white">
                 Amount
               </div>
             </div>
 
-            <div className="flex max-w-full  border-black dark:border-white max-h-full text-center">
-              <div className="w-10 border-r border-black dark:border-white">
+            <div className="flex max-w-full border-black dark:border-white max-h-full text-center ">
+              <div className="w-20 border-r border-black dark:border-white">
                 10
               </div>
-              <div className="w-96 border-r border-black dark:border-white text-start px-1">
+              <div className="w-[595.5px] border-r border-black dark:border-white text-start px-1">
                 Bisleri Water 20 Ltr. Jar
               </div>
-              <div className="w-14 border-r border-black dark:border-white">
+              <div className="w-36 border-r border-black dark:border-white">
                 85
               </div>
-              <div className="w-20 border-black dark:border-white">850</div>
+              <div className="w-32 border-r border-black dark:border-white">
+                85
+              </div>
+              <div className="w-40 border-black dark:border-white">850</div>
             </div>
 
             <UnfilledProductTable />
             <UnfilledProductTable />
             <UnfilledProductTable />
-      
+            <UnfilledProductTable />
+            <UnfilledProductTable />
+            <UnfilledProductTable />
+            <UnfilledProductTable />
+            <UnfilledProductTable />
+            <UnfilledProductTable />
+            <UnfilledProductTable />
+            <UnfilledProductTable />
+            <UnfilledProductTable />
+            <UnfilledProductTable />
+            <UnfilledProductTable />
+            <UnfilledProductTable />
+            <UnfilledProductTable />
+            <UnfilledProductTable />
+            <UnfilledProductTable />
 
             {unfilledArray.map((item) => (
-                <UnfilledProductTable key={item} />
-              ))}
+              <UnfilledProductTable key={item} />
+            ))}
+          </div>
+          <div className="flex max-w-full flex-1 border-black dark:border-white max-h-full text-center border-t">
+            <div className="w-20 border-r border-black dark:border-white">
+              &nbsp;
+            </div>
+            <div className="w-[595.5px] border-r border-black dark:border-white text-end px-1">
+              Total
+            </div>
+            <div className="w-36 border-r border-black dark:border-white">
+              &nbsp;
+            </div>
+            <div className="w-32 border-r border-black dark:border-white">
+              &nbsp;
+            </div>
+            <div className="w-40 border-black dark:border-white">850</div>
           </div>
 
           <footer className="flex w-full justify-between h-16 px-1 border-black dark:border-white border-t">
@@ -142,10 +175,13 @@ export const SmlTemplate = ({ invoiceInfo }: { invoiceInfo: any }) => {
 const UnfilledProductTable = () => {
   return (
     <div className="flex items-center text-center">
-      <div className="border-r border-black dark:border-white w-10">&nbsp;</div>
-      <div className="border-r border-black dark:border-white w-96">&nbsp;</div>
-      <div className="border-r border-black dark:border-white w-14">&nbsp;</div>
-      <div className="border-black dark:border-white w-20">&nbsp;</div>
+      <div className="border-r border-black dark:border-white w-20">&nbsp;</div>
+      <div className="border-r border-black dark:border-white w-[600px]">
+        &nbsp;
+      </div>
+      <div className="border-r border-black dark:border-white w-36">&nbsp;</div>
+      <div className="border-r border-black dark:border-white w-32">&nbsp;</div>
+      <div className="border-black dark:border-white w-40">&nbsp;</div>
     </div>
   );
 };
