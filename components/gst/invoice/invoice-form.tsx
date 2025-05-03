@@ -691,7 +691,6 @@ export const InvoiceForm = ({
             )}
           />
           <Button type="submit">
-            {" "}
             {isEdit ? "Update Invoice" : "Create Invoice"}
           </Button>
         </form>

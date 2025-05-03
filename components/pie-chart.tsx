@@ -60,7 +60,7 @@ export function PieChartGraph({ chartData }: { chartData: any }) {
       (acc: number, curr: any) => acc + curr.invoiceCount,
       0
     );
-  }, []);
+  }, [chartData]);
 
   const currYear = new Date().getFullYear();
   const currMonth = format(new Date(), "MMMM");

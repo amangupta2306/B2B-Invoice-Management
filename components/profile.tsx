@@ -24,15 +24,15 @@ export const Profile = () => {
   };
 
   return (
-    <div className="flex items-center gap-2 pr-8">
-      <Separator orientation="vertical" className="h-6 font-bold bg-black" />
+    <div className="flex items-center gap-2 lg:pr-8">
+      <Separator orientation="vertical" className="lg:h-5 lg:font-bold lg:bg-black" />
       <DropdownMenu>
         <DropdownMenuTrigger className="hover:bg-gray-400/50 p-[6px] rounded-full transition-all duration-200 ease-in-out focus-visible:outline-none">
           <Image
             alt="User Avatar"
             src={user.image || ""}
-            width={35}
-            height={35}
+            width={30}
+            height={30}
             className="rounded-full"
           />
         </DropdownMenuTrigger>
@@ -50,9 +50,9 @@ export const Profile = () => {
           </div>
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <Link href="/settings">Settings</Link>
-          </DropdownMenuItem>
+          <Link href="/settings">
+            <DropdownMenuItem>Settings</DropdownMenuItem>
+          </Link>
           <DropdownMenuItem>Billing</DropdownMenuItem>
           <DropdownMenuItem>Team</DropdownMenuItem>
           <DropdownMenuSeparator />

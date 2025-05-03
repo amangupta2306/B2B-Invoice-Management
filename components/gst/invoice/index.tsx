@@ -38,7 +38,7 @@ export const Invoice = async () => {
           <CardTitle>{session?.user.companyName}</CardTitle>
           <CardDescription>Create Invoice</CardDescription>
         </CardHeader>
-        <CardContent className="px-3 lg:px-6">
+        <CardContent className="px-2 lg:px-6">
           <InvoiceForm
             isEdit={false}
             customers={customers || []}

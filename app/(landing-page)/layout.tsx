@@ -3,9 +3,9 @@ import { Navbar } from "./_components/navbar";
 
 export default function LandingLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="h-screen flex flex-col items-center bg-violet-100">
+    <div className="flex flex-col items-center landing-page">
       <Navbar />
-      <main className="flex-1">{children}</main>
+      <main>{children}</main>
     </div>
   );
 }

@@ -64,9 +64,9 @@ export async function SectionCards() {
     .toFixed(2);
 
   return (
-    <div className="flex items-center justify-center w-full gap-4">
-      <div className="flex flex-col items-center justify-center gap-4 flex-1">
-        <div className="flex w-full items-center gap-4">
+    <div className="flex flex-col lg:flex-row items-center justify-center w-full gap-4">
+      <div className="flex flex-col items-center justify-center gap-4 flex-1 w-full">
+        <div className="flex w-full flex-col lg:flex-row items-center gap-4">
           <Card className="w-full">
             <CardHeader className="relative">
               <CardDescription>Gross Revenue</CardDescription>
@@ -119,7 +119,7 @@ export async function SectionCards() {
             </CardFooter>
           </Card>
         </div>
-        <div className="flex w-full items-center gap-4">
+        <div className="flex w-full flex-col lg:flex-row items-center gap-4">
           <Card className="w-full">
             <CardHeader className="relative">
               <CardDescription>Active Accounts</CardDescription>
@@ -172,7 +172,7 @@ export async function SectionCards() {
           </Card>
         </div>
       </div>
-      <div>
+      <div className="w-full lg:w-auto">
         <PieChartGraph chartData={pieChartData} />
       </div>
     </div>

@@ -167,9 +167,9 @@ model LocalCustomPrice {
 model LocalInvoice {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  invoiceNo         String
-  // monthOf           String
-  totalInvoiceValue String
+  localInvoiceNo         String
+  localInvoiceDate       DateTime @default(now())
+  localTotalInvoiceValue String
 
   userId String? @db.ObjectId
   user   Users?  @relation(fields: [userId], references: [id])
