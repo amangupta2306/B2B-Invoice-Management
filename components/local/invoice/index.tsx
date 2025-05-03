@@ -41,8 +41,7 @@ export const LocalInvoice = async () => {
           <LocalInvoiceForm
             customers={customers}
             products={products}
-            lastInvoiceNo={invoices?.invoiceNo || ""}
-            
+            lastInvoiceNo={invoices?.localInvoiceNo || ""}
           />
         </CardContent>
       </Card>
